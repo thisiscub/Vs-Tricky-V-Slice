@@ -13,17 +13,11 @@ class AuditorHellStage extends Stage {
 		super('auditorHell');
 	}
 
-	var exSpikes:FlxSprite;
 	var cloneOne:FlxSprite;
 	var cloneTwo:FlxSprite;
 	
 	function buildStage() {
 		super.buildStage();
-
-		exSpikes = FunkinSprite.createSparrow(550, 470, 'bgs/expurgation/FloorSpikes');
-		exSpikes.visible = false;
-		exSpikes.zIndex = 400;
-		exSpikes.animation.addByPrefix('spike','Floor Spikes', 24, false);
 		
 		cloneOne = FunkinSprite.createSparrow(0, 0, 'bgs/expurgation/Clone');
 		cloneTwo = FunkinSprite.createSparrow(0, 0, 'bgs/expurgation/Clone');
@@ -36,7 +30,6 @@ class AuditorHellStage extends Stage {
 
 		add(cloneOne);
 		add(cloneTwo);
-		add(exSpikes);
 		refresh();
 	}
 
@@ -49,31 +42,6 @@ class AuditorHellStage extends Stage {
 		{
 			beatOfFuck = Conductor.instance.currentBeat;
 			doClone(FlxG.random.int(0, 1));
-		}
-
-		if (exSpikes.animation.frameIndex >= 3 && PlayState.instance.currentStage.getDad().animation.curAnim.name == 'singUP')
-			exSpikes.animation.pause();
-	}
-
-	function onNoteHit(event) {
-		if (PlayState.instance.currentStage.getDad().characterId == 'exTricky' && event.judgement == "perfect")
-		{
-			if (PlayState.instance.currentStage.getDad().animation.curAnim.name == 'singUP' && exSpikes.animation.finished)
-			{
-				exSpikes.visible = true;
-				if (exSpikes.animation.finished)
-					exSpikes.animation.play('spike');
-			}
-			
-			if (!exSpikes.animation.finished)
-			{
-				exSpikes.animation.resume();
-				exSpikes.animation.finishCallback = function(pog:String) {
-					trace('finished');
-					exSpikes.visible = false;
-					exSpikes.animation.finishCallback = null;
-				}
-			}
 		}
 	}
 

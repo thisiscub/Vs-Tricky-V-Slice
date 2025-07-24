@@ -1,10 +1,57 @@
 import funkin.play.character.MultiSparrowCharacter;
+import funkin.play.stage.Stage;
+import funkin.play.PlayState;
 
 class TrickyExpurgationCharacter extends MultiSparrowCharacter
 {
+	static var exSpikes:FlxSprite;
+
 	function new()
 	{
 		super("exTricky");
+	}
+
+	function buildStage() {
+		super.buildStage();
+
+		exSpikes = FunkinSprite.createSparrow(550, 470, 'bgs/expurgation/FloorSpikes');
+		exSpikes.visible = false;
+		exSpikes.zIndex = 400;
+		exSpikes.animation.addByPrefix('spike','Floor Spikes', 24, false);
+
+		add(exSpikes);
+		refresh();
+	}
+
+	function onUpdate(event:ScriptEvent) {
+		super.onUpdate(event);
+
+		if (this.animation != null && exSpikes != null) {
+			if (exSpikes.animation.frameIndex >= 3 && this.animation.curAnim.name == 'singUP')
+				exSpikes.animation.pause();
+		}
+	}
+
+	function playAnimation(name:String, restart:Bool = false, ignoreOther:Bool = false, reverse:Bool = false) {
+		super.playAnimation(name, restart, ignoreOther, reverse);
+		
+		if (exSpikes != null) {
+			if (this.animation.curAnim.name == 'singUP' && exSpikes.animation.finished)
+			{
+				exSpikes.visible = true;
+				if (exSpikes.animation.finished)
+					exSpikes.animation.play('spike');
+			}
+			
+			if (!exSpikes.animation.finished)
+			{
+				exSpikes.animation.resume();
+				exSpikes.animation.finishCallback = function(pog:String) {
+					exSpikes.visible = false;
+					exSpikes.animation.finishCallback = null;
+				}
+			}
+		}
 	}
 
 	function onNoteHit(event:HitNoteScriptEvent)
@@ -13,8 +60,8 @@ class TrickyExpurgationCharacter extends MultiSparrowCharacter
 
 		if (event.judgement == "perfect" && event.note.kind == "exHank")
 		{
-			this.holdTimer = 0;
-			this.playAnimation("Hank", true);
+			holdTimer = 0;
+			playAnimation("Hank", true);
 		}
 	}
 }
