@@ -1,7 +1,5 @@
 import flixel.FlxG;
 import flixel.math.FlxBasePoint;
-import flixel.tweens.FlxEase;
-import flixel.util.FlxTimer;
 import funkin.audio.FunkinSound;
 import funkin.Conductor;
 import funkin.graphics.FunkinSprite;
@@ -9,6 +7,10 @@ import funkin.modding.module.ScriptedModule;
 import funkin.Paths;
 import funkin.play.PlayState;
 import funkin.play.song.Song;
+
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
 
 import funkin.FunkinMemory;
 
@@ -26,17 +28,33 @@ class ExpurgationSong extends Song {
     	hasPlayedCutscene = false;
   	}
 
+	function onResume(e)
+	{
+		super.onResume(e);
+
+		FlxTween.globalManager.forEach((tween:FlxTween) -> tween.active = true);
+		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer.active = true);
+	}
+
+	function onPause(e)
+	{
+		super.onPause(e);
+
+		FlxTween.globalManager.forEach((tween:FlxTween) -> tween.active = false);
+		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer.active = false);
+	}
+
 	function onCreate(event:ScriptEvent) {
 		super.onCreate(event);
 		
-		if (PlayState.instance.playerStrumline.inArrowContorlSchemeMode) {
-			var wall:FunkinSprite = FunkinSprite.create(1000, -200, 'bgs/expurgation/lolz');
-			wall.setGraphicSize(Std.int(wall.width * 1.0));
-			wall.cameras = [PlayState.instance.camHUD];
-			wall.zIndex = 1700;
-			PlayState.instance.add(wall);
-			PlayState.instance.refresh();
-		}
+		var playerNotesX = PlayState.instance.playerStrumline.x + PlayState.instance.playerStrumline.getXPos(3);
+
+		var wall:FunkinSprite = FunkinSprite.create(playerNotesX + 200, -200, 'bgs/expurgation/lolz');	
+		wall.setGraphicSize(Std.int(wall.width * 1.0));
+		wall.cameras = [PlayState.instance.camHUD];
+		wall.zIndex = 1700;
+		PlayState.instance.add(wall);
+		PlayState.instance.refresh();
 
 		gremlin = ScriptedModule.init("ExpurgationGremlin");
 
@@ -49,9 +67,6 @@ class ExpurgationSong extends Song {
 	}	
 
   	public override function onCountdownStart(event:CountdownScriptEvent):Void {
-		if (gremlinTimer != null && gremlinTimer.active)
-			gremlinTimer.cancel();
-			
 		if (!hasPlayedCutscene) {
 			var pre:Float = Conductor.instance.beatLengthMs * -10;
 			Conductor.instance.update(pre);
@@ -62,33 +77,24 @@ class ExpurgationSong extends Song {
       		event.cancelEvent();
 
       		playCutscene();
+		}
+			
+		// idk why but i think this doesnt work and im so fuicking mad aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-			return;
-		}		
+		if (gremlinTimer != null) {
+			gremlinTimer.cancel();
+			gremlinTimer = null;
+		}
 
-		gremlinTimer = new FlxTimer().start(25, function(tmr:FlxTimer) {
-			if (Conductor.instance.currentStep < 2400) {
-				if (PlayState.instance.mayPauseGame && !PlayState.instance.isGamePaused && PlayState.instance.health >= 1.5)
-					gremlin.scriptCall("appear", [40, 3]);
-				tmr.reset(25);
-			}
-		});
-	}
-
-	function onResume(e)
-	{
-		super.onResume(e);
-
-		if (gremlinTimer != null)
-			gremlinTimer.active = true;
-	}
-
-	function onPause(e)
-	{
-		super.onPause(e);
-
-		if (gremlinTimer != null)
-			gremlinTimer.active = false;
+		if (!PlayState.instance.isInCutscene) {
+			gremlinTimer = new FlxTimer().start(25, function(tmr:FlxTimer) {
+				if (Conductor.instance.currentStep < 2400) {
+					if (PlayState.instance.health >= 1.5)
+						gremlin.appear(40, 3);
+					tmr.reset(25);
+				}
+			});
+		}
 	}
 
   	function playCutscene() {
@@ -98,7 +104,7 @@ class ExpurgationSong extends Song {
 
 		trickySpawnSound = FunkinSound.load(Paths.sound("expurgation/Trickyspawn"));
 		trickyGlitchSound = FunkinSound.load(Paths.sound("expurgation/TrickyGlitch"));
-		PlayState.instance.tweenCameraToPosition(camPosDAD.x, camPosDAD.y, 0, FlxEase.quadInOut);
+		PlayState.instance.tweenCameraToPosition(camPosDAD.x, camPosDAD.y, 0.6, FlxEase.sineInOut);
 
 		var spawnAnim = FunkinSprite.createSparrow(700, 240, "bgs/expurgation/EXENTER", "clown");
 		spawnAnim.animation.addByPrefix("start", "Entrance", 24, false);
@@ -124,10 +130,22 @@ class ExpurgationSong extends Song {
 	}
 
   	function onSongRetry(event:ScriptEvent) {
-		PlayState.instance.needsReset = true;
       	PlayState.instance.currentStage.getDad().alpha = 0;
     	hasPlayedCutscene = false;
-  	}
+
+		gremlin.manualDisappear();
+		ScriptedModule.init("ExpurgationSign").scriptCall("leaveTheScreen");
+
+		if (gremlinTimer != null) {
+			gremlinTimer.cancel();
+			gremlinTimer = null;
+		}
+		
+		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer.cancel());
+		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer = null);
+
+		super.onSongRetry(event);
+	}
 
 	public static var totalDamageTaken:float = 0;
 
@@ -135,7 +153,7 @@ class ExpurgationSong extends Song {
     	super.onNoteHit(event);
 
     	if (event.judgement == "bad" || event.judgement == "shit")
-			gremlin.scriptCall("disappear");
+			gremlin.manualDisappear();
 	}
 
 	function onNoteMiss(event:NoteScriptEvent) {
@@ -143,7 +161,7 @@ class ExpurgationSong extends Song {
 
 		if (event.note.noteData.kind != "trickydeath") {
 			totalDamageTaken += 0.075;
-			gremlin.scriptCall("disappear");
+			gremlin.manualDisappear();
 		}
 	}
 }

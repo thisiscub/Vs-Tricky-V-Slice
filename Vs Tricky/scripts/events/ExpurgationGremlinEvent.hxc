@@ -12,7 +12,7 @@ class ExpurgationGremlinEvent extends SongEvent {
 			return;
 
 		var gremlin:ScriptedModule = ScriptedModule.init("ExpurgationGremlin");
-		gremlin.scriptCall("appear", [data.value.hpToTake, data.value.duration]);
+		gremlin.scriptCall("appear", [data.value.hpToTake, data.value.duration, data.value.persist]);
 
 		PlayState.instance.currentStage.refresh();
 	}

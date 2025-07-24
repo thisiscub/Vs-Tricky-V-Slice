@@ -7,7 +7,7 @@ import funkin.play.notes.NoteSplash;
 import funkin.play.notes.Strumline;
 import funkin.play.notes.notekind.NoteKindManager;
 import funkin.data.notestyle.NoteStyleRegistry;
-
+import funkin.Highscore;
 
 import funkin.FunkinMemory;
 
@@ -53,6 +53,8 @@ class HellNote extends NoteKind
 		{
 			event.cancelEvent();
 
+			Highscore.tallies.totalNotes--;
+
 			FunkinSound.playOnce(Paths.sound("burnSound"));
 			PlayState.instance.health -= 0.45;
 			PlayState.instance.playerStrumline.killNote(event.note);
@@ -63,8 +65,11 @@ class HellNote extends NoteKind
 
 	function onNoteMiss(event:NoteScriptEvent)
 	{
-		if (event.note.noteData.kind == "trickyhell") 
+		if (event.note.noteData.kind == "trickyhell") {
 			event.cancelEvent();
+
+			Highscore.tallies.totalNotes--;
+		}
 	}
 
 	public function playNoteSplash(event):Void

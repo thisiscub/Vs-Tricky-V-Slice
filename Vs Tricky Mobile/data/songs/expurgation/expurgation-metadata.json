@@ -1,5 +1,5 @@
 {
-  "version": "2.2.2",
+  "version": "2.2.4",
   "songName": "Expurgation",
   "artist": "JADS",
   "divisions": 96,
@@ -7,7 +7,8 @@
   "offsets": {
     "instrumental": 0,
     "altInstrumentals": {    },
-    "vocals": {    }
+    "vocals": {    },
+    "altVocals": {    }
   },
   "playData": {
     "songVariations": [    ],
@@ -19,18 +20,22 @@
       "girlfriend": "gftied",
       "opponent": "exTricky",
       "instrumental": "",
-      "altInstrumentals": [      ]
+      "altInstrumentals": [      ],
+      "opponentVocals": [ ],
+      "playerVocals": [
+        "bftricky"
+      ]
     },
     "stage": "auditorHell",
     "noteStyle": "funkin",
-    "album": "trickyvol",
     "ratings": {
       "hard": 15
     },
+    "album": "trickyvol",
     "previewStart": 0,
     "previewEnd": 0
   },
-  "generatedBy": "Friday Night Funkin' - v0.3.3",
+  "generatedBy": "Friday Night Funkin' - v0.7.3",
   "timeFormat": "ms",
   "timeChanges": [
     {

@@ -10,14 +10,10 @@ import funkin.play.PlayState;
 import funkin.Preferences;
 import funkin.modding.module.Module;
 
-import flixel.tweens.FlxTweenManager;
-
 import funkin.FunkinMemory;
 
 class ExpurgationGremlin extends Module {
 	var mustStop:Bool = false;
-
-	var coolTweens = [];
 
 	var currentGremlin;
 
@@ -28,45 +24,10 @@ class ExpurgationGremlin extends Module {
 		super("ExpurgationGremlin");
 	}
 
-	function onResume(e)
-	{
-		super.onResume(e);
-
-		if (tween1 != null)
-			tween1.active = true;
-			
-		if (tween2 != null)
-			tween2.active = true;
-	}
-
-	function onPause(e)
-	{
-		super.onPause(e);
-
-		if (tween1 != null)
-			tween1.active = false;
-			
-		if (tween2 != null)
-			tween2.active = false;
-	}
-
-	function onSongRetry(event:ScriptEvent)
-	{
-		super.onSongRetry(event);
-		if (currentGremlin != null)
-		{	
-			currentGremlin.visible = false;
-			currentGremlin.destory();
-			currentGremlin = null;
-		}
-	}
-
-	function onCreate(event:ScriptEvent) {
-		FunkinSprite.cacheTexture(Paths.image("mechanics/HP GREMLIN"));
-		FunkinMemory.permanentCacheTexture(Paths.image("mechanics/Sign_Post_Mechanic", "shared"));
-	}
-
-	public function appear(hpToTake:Int, duration:Int):Void {
+	public function appear(hpToTake:Int, duration:Int, persist:Bool):Void {
+		if (PlayState.instance.health < 1.5 && !persist)
+			return;
+		
 		mustStop = false;
 
 		tween1 = null;
@@ -122,13 +83,13 @@ class ExpurgationGremlin extends Module {
 						{
 							onUpdate: function(tween2:FlxTween)
 							{
-								if (mustStop)
+								if (mustStop && !persist)
 								{
+									tween2 = null;
 									gramlan.animation.play("release");
 									gramlan.animation.finishCallback = function(pog:String)
 									{
-										gramlan.visible = false;
-										tween2.cancel();
+										PlayState.instance.remove(gramlan);
 									}
 								}
 								else
@@ -155,7 +116,8 @@ class ExpurgationGremlin extends Module {
 		});
 	}
 
-	public function disappear():Void {
-		mustStop = true;
+	public function manualDisappear():Void {
+		if (currentGremlin != null)
+			mustStop = true;
 	}
 }

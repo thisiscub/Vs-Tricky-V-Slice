@@ -7,16 +7,20 @@ import funkin.play.notes.NoteSplash;
 import funkin.play.notes.Strumline;
 import funkin.play.notes.notekind.NoteKindManager;
 import funkin.data.notestyle.NoteStyleRegistry;
+import funkin.Highscore;
 
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
+
+import funkin.FunkinMemory;
 
 class DeathNote extends NoteKind
 {
 	public function new(noteKind:String, description:String = "", ?noteStyleId:String, ?params:Array<NoteKindParam>)
 	{
 		super("trickydeath", "Death Note (Tricky)", "deathnotes", []);
+		FunkinMemory.permanentCacheSound(Paths.sound("death"));
 	}
 
 	function onUpdate(event)
@@ -40,8 +44,11 @@ class DeathNote extends NoteKind
 
 	function onNoteMiss(event:NoteScriptEvent)
 	{
-		if (event.note.noteData.kind == "trickydeath") 
+		if (event.note.noteData.kind == "trickydeath") {
 			event.cancelEvent();
+			
+			Highscore.tallies.totalNotes--;
+		}
 	}
 
 	function onNoteHit(event:HitNoteScriptEvent)
@@ -55,9 +62,6 @@ class DeathNote extends NoteKind
 		if (event.note.noteData.kind == "trickydeath")
 		{
 			event.cancelEvent();
-
-			FlxTween.globalManager.forEach((tween:FlxTween) -> tween.active = false);
-			FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer.active = false);
 
 			PlayState.instance.playerStrumline.killNote(event.note);
 			FunkinSound.playOnce(Paths.sound("death"));

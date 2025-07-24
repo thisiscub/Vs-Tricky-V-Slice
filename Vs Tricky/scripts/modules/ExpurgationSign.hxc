@@ -7,32 +7,31 @@ import funkin.play.PlayState;
 import funkin.FunkinMemory;
 
 class ExpurgationSign extends Module {
+	static var signsArray:Array<FunkinSprite> = [];
+
 	public function new() {
 		super("ExpurgationSign");
-	}
-
-	function onCreate(event:ScriptEvent) {
-		FunkinMemory.permanentCacheTexture(Paths.image("mechanics/Sign_Post_Mechanic", "shared"));
 	}
 
 	public function appear(signType:Int = 0, flipX:Bool = false):Void {
 		var sign:FunkinSprite = FunkinSprite.createSparrow(0, 0, "mechanics/Sign_Post_Mechanic");
 		sign.setGraphicSize(Std.int(sign.width * 0.67));
 
-		var scrollOffset:Int = PlayState.instance.playerStrumline.inArrowContorlSchemeMode ? 900 : 650;
+		var playerNotesX = PlayState.instance.playerStrumline.x + PlayState.instance.playerStrumline.getXPos(3);
+		var signX = playerNotesX - 400;
 
 		switch (signType) {
 			case 0:
 				sign.animation.addByPrefix("sign", "Signature Stop Sign 1", 24, false);
 
-				sign.x = FlxG.width - scrollOffset;
+				sign.x = signX;
 
 				sign.angle = -90;
 				sign.y = -300;
 			case 1:
 				sign.animation.addByPrefix("sign", "Signature Stop Sign 3", 24, false);
 
-				sign.x = FlxG.width - scrollOffset - 130;
+				sign.x = signX - 130;
 
 				sign.angle = -90;
 				if (PlayState.instance.playerStrumline.isDownscroll)
@@ -42,7 +41,7 @@ class ExpurgationSign extends Module {
 			case 2:
 				sign.animation.addByPrefix("sign", "Signature Stop Sign 4", 24, false);
 
-				sign.x = FlxG.width - scrollOffset - 420;
+				sign.x = signX - 420;
 
 				sign.angle = -90;
 				sign.y = -145;
@@ -53,11 +52,19 @@ class ExpurgationSign extends Module {
 		sign.cameras = [PlayState.instance.camHUD];
     	sign.zIndex = 1500;
 
+		signsArray.push(sign);
+
 		PlayState.instance.add(sign);
 		PlayState.instance.refresh();
 
 		sign.animation.finishCallback = function(pog:String) {
 			PlayState.instance.remove(sign);
+		}
+	}
+
+	function leaveTheScreen() {
+		for (sign in signsArray.members) {
+			FlxTween.tween(sign, { y: 1000 }, 0.5, { ease: FlxEase.expoOut, onComplete: function(twn) { PlayState.instance.remove(sign); }});
 		}
 	}
 }

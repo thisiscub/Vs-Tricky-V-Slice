@@ -874,9 +874,9 @@
       "t": 173217.391304348,
       "e": "ExpurgationGremlin",
       "v": {
-	"hpToTake": 20,
+	"duration": 13,
 	"persist": true,
-	"duration": 13
+	"hpToTake": 20
 }
     },
     {
@@ -11942,5 +11942,5 @@
       }
     ]
   },
-  "generatedBy": "Friday Night Funkin' - v0.6.4"
+  "generatedBy": "Friday Night Funkin' - v0.7.3"
 }
