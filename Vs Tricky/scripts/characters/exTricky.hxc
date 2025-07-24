@@ -1,26 +1,27 @@
 import funkin.play.character.MultiSparrowCharacter;
 import funkin.play.stage.Stage;
 import funkin.play.PlayState;
+import funkin.graphics.FunkinSprite;
 
 class TrickyExpurgationCharacter extends MultiSparrowCharacter
 {
-	static var exSpikes:FlxSprite;
+	var exSpikes:FlxSprite;
 
 	function new()
 	{
 		super("exTricky");
 	}
 
-	function buildStage() {
-		super.buildStage();
+	function onAdd(e) {
+		super.onAdd(e);
 
 		exSpikes = FunkinSprite.createSparrow(550, 470, 'bgs/expurgation/FloorSpikes');
 		exSpikes.visible = false;
 		exSpikes.zIndex = 400;
 		exSpikes.animation.addByPrefix('spike','Floor Spikes', 24, false);
 
-		add(exSpikes);
-		refresh();
+		PlayState.instance.currentStage.add(exSpikes);
+		PlayState.instance.currentStage.refresh();
 	}
 
 	function onUpdate(event:ScriptEvent) {
