@@ -874,9 +874,9 @@
       "t": 173217.391304348,
       "e": "ExpurgationGremlin",
       "v": {
-	"duration": 13,
+	"hpToTake": 20,
 	"persist": true,
-	"hpToTake": 20
+	"duration": 13
 }
     },
     {
@@ -8003,28 +8003,28 @@
         "t": 138782.608695652,
         "d": 7,
         "l": 782.608695652174,
-        "k": "normal",
+        "k": "exHank",
         "p": [        ]
       },
       {
         "t": 138782.608695652,
         "d": 6,
         "l": 782.608695652174,
-        "k": "normal",
+        "k": "exHank",
         "p": [        ]
       },
       {
         "t": 138782.608695652,
         "d": 5,
         "l": 782.608695652174,
-        "k": "normal",
+        "k": "exHank",
         "p": [        ]
       },
       {
         "t": 138782.608695652,
         "d": 4,
         "l": 782.608695652174,
-        "k": "normal",
+        "k": "exHank",
         "p": [        ]
       },
       {
@@ -11942,5 +11942,5 @@
       }
     ]
   },
-  "generatedBy": "Friday Night Funkin' - v0.7.3"
+  "generatedBy": "Friday Night Funkin' - v0.7.3 (main : 72e0ff6 : MODIFIED) PROTOTYPE"
 }
