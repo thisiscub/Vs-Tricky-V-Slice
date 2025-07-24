@@ -3,7 +3,8 @@ import funkin.graphics.FunkinSprite;
 import funkin.modding.module.Module;
 import funkin.Paths;
 import funkin.play.PlayState;
-
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 import funkin.FunkinMemory;
 
 class ExpurgationSign extends Module {
@@ -63,8 +64,8 @@ class ExpurgationSign extends Module {
 	}
 
 	function leaveTheScreen() {
-		for (sign in signsArray.members) {
-			FlxTween.tween(sign, { y: 1000 }, 0.5, { ease: FlxEase.expoOut, onComplete: function(twn) { PlayState.instance.remove(sign); }});
+		for (sign in signsArray) {
+			FlxTween.tween(sign, { y: 1000 }, 0.5, { ease: FlxEase.expoOut, onComplete: _ -> PlayState.instance.remove(sign)});
 		}
 	}
 }

@@ -13,6 +13,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 
 import funkin.FunkinMemory;
+import funkin.modding.module.ModuleHandler;
 
 class ExpurgationSong extends Song {
 	var trickySpawnSound:FunkinSound;
@@ -137,7 +138,8 @@ class ExpurgationSong extends Song {
     	hasPlayedCutscene = false;
 
 		gremlin.manualDisappear();
-		ScriptedModule.init("ExpurgationSign").scriptCall("leaveTheScreen");
+		var signMeh = ModuleHandler.getModule("ExpurgationSign");
+		signMeh.leaveTheScreen();
 
 		if (gremlinTimer != null) {
 			gremlinTimer.cancel();

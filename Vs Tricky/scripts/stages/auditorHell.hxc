@@ -75,7 +75,6 @@ class AuditorHellStage extends Stage {
 	{
 		remove(cloneOne);
 		remove(cloneTwo);
-		remove(exSpikes);
 		refresh();
     }
 }
