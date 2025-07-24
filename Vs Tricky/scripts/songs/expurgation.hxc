@@ -86,6 +86,9 @@ class ExpurgationSong extends Song {
 			gremlinTimer = null;
 		}
 
+		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer.cancel());
+		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer = null);
+
 		if (!PlayState.instance.isInCutscene) {
 			gremlinTimer = new FlxTimer().start(25, function(tmr:FlxTimer) {
 				if (Conductor.instance.currentStep < 2400) {
@@ -100,7 +103,7 @@ class ExpurgationSong extends Song {
   	function playCutscene() {
 		PlayState.instance.isInCutscene = true;
 
-  		var camPosDAD:FlxBasePoint = PlayState.instance.currentStage.getDad().cameraFocusPoint;
+		var camPosDAD:FlxBasePoint = PlayState.instance.currentStage.getDad().cameraFocusPoint;
 
 		trickySpawnSound = FunkinSound.load(Paths.sound("expurgation/Trickyspawn"));
 		trickyGlitchSound = FunkinSound.load(Paths.sound("expurgation/TrickyGlitch"));
@@ -113,6 +116,13 @@ class ExpurgationSong extends Song {
 		spawnAnim.animation.play("start");
 
 		trickySpawnSound.play();
+		
+		spawnAnim.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int) {
+			if (frameIndex == 24) {
+				trickyGlitchSound.play();
+			}
+		};
+		
 		spawnAnim.animation.finishCallback = function(pog:String) {
 			trickyGlitchSound.fadeOut();
 			PlayState.instance.currentStage.getDad().alpha = 1;
@@ -120,13 +130,6 @@ class ExpurgationSong extends Song {
 			PlayState.instance.isInCutscene = false;
 			PlayState.instance.startCountdown();
 		}
-
-		new FlxTimer().start(0.001, function(tmr:FlxTimer) {
-			if (spawnAnim.animation.frameIndex == 24)
-				trickyGlitchSound.play();
-			else
-				tmr.reset(0.001);
-		});
 	}
 
   	function onSongRetry(event:ScriptEvent) {

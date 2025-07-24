@@ -51,7 +51,7 @@ class ExpurgationGremlin extends Module {
 
 		currentGremlin = gramlan;
 
-		if (Preferences.downscroll)
+		if (PlayState.instance.playerStrumline.isDownscroll)
 		{
 			gramlan.flipY = true;
 			gramlan.y -= 150;
