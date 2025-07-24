@@ -3,11 +3,11 @@
       {
         "danceEvery": 0,
         "zIndex": 10,
-        "position": [500, 100],
+        "position": [300, 100],
         "animType": "sparrow",
         "name": "bg",
         "isPixel": false,
-        "scale": [1.2, 1.2],
+        "scale": [1.4, 1.2],
         "assetPath": "bgs/default/red",
         "scroll": [0.95, 0.95],
         "animations": []

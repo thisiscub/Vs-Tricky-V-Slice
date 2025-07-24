@@ -2,6 +2,7 @@ import funkin.play.notes.notestyle.NoteStyle;
 
 //import funkin.play.notes.NoteDirection;
 import funkin.Preferences;
+import funkin.play.PlayState;
 
 class HellNoteStyle extends NoteStyle
 {
@@ -10,31 +11,17 @@ class HellNoteStyle extends NoteStyle
         super("hellnotes");
     }
 
-    /*function fetchNoteAnimationData(dir:NoteDirection):Null<AnimationData>
-    {
-        var result:Null<AnimationData> = switch (dir)   
-        {
-            case 0: _data.assets?.note?.data?.left?.toNamed();
-            case 1: _data.assets?.note?.data?.left?.toNamed();
-            case 2: _data.assets?.note?.data?.left?.toNamed();
-            //case 1: (Preferences.downscroll ? _data.assets?.note?.data?.up?.toNamed() : _data.assets?.note?.data?.down?.toNamed());
-            //case 2: (Preferences.downscroll ? _data.assets?.note?.data?.down?.toNamed() : _data.assets?.note?.data?.up?.toNamed());
-            case 3: _data.assets?.note?.data?.right?.toNamed();
-        };
-        return result ?? fallback?.fetchNoteAnimationData(dir);
-    }*/
-
     function buildNoteAnimations(target:NoteSprite):Void
     {
         var leftData:Null<AnimationData> = fetchNoteAnimationData(0);
         if (leftData != null) target.animation.addByPrefix('purpleScroll', leftData.prefix ?? '', leftData.frameRate ?? 24, leftData.looped ?? false,
             leftData.flipX, leftData.flipY);
             
-        var downData:Null<AnimationData> = !Preferences.downscroll ? fetchNoteAnimationData(1) : fetchNoteAnimationData(2);
+        var downData:Null<AnimationData> = !(PlayState.instance.playerStrumline.isDownscroll) ? fetchNoteAnimationData(1) : fetchNoteAnimationData(2);
         if (downData != null) target.animation.addByPrefix('blueScroll', downData.prefix ?? '', downData.frameRate ?? 24, downData.looped ?? false,
             downData.flipX, downData.flipY);
 
-        var upData:Null<AnimationData> = !Preferences.downscroll ? fetchNoteAnimationData(2) : fetchNoteAnimationData(1);
+        var upData:Null<AnimationData> = !(PlayState.instance.playerStrumline.isDownscroll) ? fetchNoteAnimationData(2) : fetchNoteAnimationData(1);
         if (upData != null) target.animation.addByPrefix('greenScroll', upData.prefix ?? '', upData.frameRate ?? 24, upData.looped ?? false, upData.flipX,
             upData.flipY);
 

@@ -3,8 +3,8 @@
       {
         "danceEvery": 0,
         "zIndex": 10,
-        "position": [-1000, -3500],
-        "scale": [5, 5],
+        "position": [-1200, -3500],
+        "scale": [5.5, 5],
         "animType": "sparrow",
         "name": "bg",
         "isPixel": false,
@@ -58,7 +58,7 @@
       "dad": {
         "zIndex": 200,
         "position": [400, 1240],
-        "cameraOffsets": [840, 400]
+        "cameraOffsets": [640, 400]
       },
       "gf": {
         "zIndex": 100,

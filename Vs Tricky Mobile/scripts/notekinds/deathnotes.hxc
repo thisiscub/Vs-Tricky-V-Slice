@@ -9,6 +9,7 @@ import funkin.play.notes.notekind.NoteKindManager;
 import funkin.data.notestyle.NoteStyleRegistry;
 import funkin.Highscore;
 
+
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
