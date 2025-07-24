@@ -1,0 +1,108 @@
+{
+	"version": "1.0.0",
+	"name": "Boyfriend (Tricky)",
+	"renderType": "multisparrow",
+	"assetPath": "characters/BOYFRIEND",
+	"healthIcon": {
+		"id": "bf"
+	},
+	"singTime": 8,
+	"flipX": true,
+	"animations": [
+		{
+			"name": "idle",
+			"prefix": "BF idle dance",
+			"offsets": [-5, 0]
+		},
+		{
+			"name": "singLEFT",
+			"prefix": "BF NOTE LEFT0",
+			"offsets": [12, -6]
+		},
+		{
+			"name": "singDOWN",
+			"prefix": "BF NOTE DOWN0",
+			"offsets": [-10, -50]
+		},
+		{
+			"name": "singUP",
+			"prefix": "BF NOTE UP0",
+			"offsets": [-29, 27]
+		},
+		{
+			"name": "singRIGHT",
+			"prefix": "BF NOTE RIGHT0",
+			"offsets": [-38, -7]
+		},
+		{
+			"name": "singLEFTmiss",
+			"prefix": "BF NOTE LEFT MISS",
+			"offsets": [12, 24]
+		},
+		{
+			"name": "singDOWNmiss",
+			"prefix": "BF NOTE DOWN MISS",
+			"offsets": [-11, -19]
+		},
+		{
+			"name": "singUPmiss",
+			"prefix": "BF NOTE UP MISS",
+			"offsets": [-29, 27]
+		},
+		{
+			"name": "singRIGHTmiss",
+			"prefix": "BF NOTE RIGHT MISS",
+			"offsets": [-30, 21]
+		},
+		{
+			"name": "preAttack",
+			"prefix": "bf pre attack",
+			"offsets": [0, 0]
+		},
+		{
+			"name": "attack",
+			"prefix": "boyfriend attack",
+			"offsets": [0, 0]
+		},
+		{
+			"name": "dodge",
+			"prefix": "boyfriend dodge",
+			"offsets": [0, 0]
+		},
+		{
+			"name": "hey",
+			"prefix": "BF HEY!!",
+			"offsets": [7, 4]
+		},
+		{
+			"name": "cheer",
+			"assetPath": "characters/BFCheer",
+			"prefix": "Cheer",
+			"offsets": [0, 0]
+		},
+    {
+      "name": "firstDeath",
+			"assetPath": "characters/signDeath",
+      "prefix": "BF diess",
+      "offsets": [264, 0]
+    },
+    {
+      "name": "deathLoop",
+			"assetPath": "characters/signDeath",
+      "prefix": "BF Dead Loops",
+      "looped": true,
+      "offsets": [0, 0]
+    },
+    {
+      "name": "deathConfirm",
+			"assetPath": "characters/signDeath",
+      "prefix": "BF Dead confirms",
+      "offsets": [0, 47]
+    },
+		{
+			"name": "scared",
+			"prefix": "BF idle shaking",
+			"offsets": [-8, 2]
+		}
+	]
+}

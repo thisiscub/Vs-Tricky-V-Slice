@@ -1,0 +1,22 @@
+{
+	"version": "1.0.0",
+	"name": "Sign Death",
+	"renderType": "multisparrow",
+	"assetPath": "characters/signDeath",
+	"flipX": true,
+	"animations": [
+		{
+			"name": "firstDeath",
+			"prefix": "BF dies"
+		},
+		{
+			"name": "deathLoop",
+			"prefix": "BF Dead Loop"
+		},
+		{
+			"name": "deathConfirm",
+			"prefix": "BF Dead confirm",
+			"offsets": [0, 40]
+		}
+	]
+}

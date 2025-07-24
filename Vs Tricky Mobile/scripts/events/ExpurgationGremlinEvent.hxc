@@ -1,0 +1,48 @@
+import funkin.modding.module.ScriptedModule;
+import funkin.play.event.SongEvent;
+import funkin.play.PlayState;
+
+class ExpurgationGremlinEvent extends SongEvent {
+	public function new() {
+		super("ExpurgationGremlin");
+	}
+
+	public override function handleEvent(data:SongEventData) {
+		if (PlayState.instance == null || PlayState.instance.currentStage == null)
+			return;
+
+		var gremlin:ScriptedModule = ScriptedModule.init("ExpurgationGremlin");
+		gremlin.scriptCall("appear", [data.value.hpToTake, data.value.duration]);
+
+		PlayState.instance.currentStage.refresh();
+	}
+
+	public function getEventSchema() {
+		return [
+			{
+				name: "hpToTake",
+				title: "Hp To Take",
+				defaultValue: 1,
+				step: 1,
+				type: "integer"
+			},
+			{
+				name: "duration",
+				title: "Duration in seconds",
+				defaultValue: 1,
+				step: 1,
+				type: "integer"
+			},
+			{
+				name: "persist",
+				title: "Persist",
+				type: "bool",
+				defaultValue: false
+			}
+		];
+	}
+
+	public function getTitle() {
+		return "Expurgation Gremlin";
+	}
+}

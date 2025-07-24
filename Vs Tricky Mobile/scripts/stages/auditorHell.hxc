@@ -1,0 +1,113 @@
+import flixel.FlxG;
+import flixel.FlxSprite;
+import funkin.graphics.FunkinSprite;
+import funkin.Paths;
+import funkin.play.stage.Stage;
+import funkin.play.PlayState;
+import flixel.text.FlxText;
+import funkin.audio.FunkinSound;
+import funkin.Conductor;
+
+class AuditorHellStage extends Stage {
+	function new() {
+		super('auditorHell');
+	}
+
+	var exSpikes:FlxSprite;
+	var cloneOne:FlxSprite;
+	var cloneTwo:FlxSprite;
+	
+	function buildStage() {
+		super.buildStage();
+
+		exSpikes = FunkinSprite.createSparrow(550, 470, 'bgs/expurgation/FloorSpikes');
+		exSpikes.visible = false;
+		exSpikes.zIndex = 400;
+		exSpikes.animation.addByPrefix('spike','Floor Spikes', 24, false);
+		
+		cloneOne = FunkinSprite.createSparrow(0, 0, 'bgs/expurgation/Clone');
+		cloneTwo = FunkinSprite.createSparrow(0, 0, 'bgs/expurgation/Clone');
+		cloneOne.alpha = 0;
+		cloneTwo.alpha = 0;
+		cloneOne.zIndex = 201;
+		cloneTwo.zIndex = 201;
+		cloneOne.animation.addByPrefix('clone', 'Clone', 24, false);
+		cloneTwo.animation.addByPrefix('clone', 'Clone', 24, false);
+
+		add(cloneOne);
+		add(cloneTwo);
+		add(exSpikes);
+		refresh();
+	}
+
+	var beatOfFuck:Int = 0;
+
+	function onUpdate(event:ScriptEvent) {
+		super.onUpdate(event);
+
+		if (Conductor.instance.currentBeat % 8 == 4 && beatOfFuck != Conductor.instance.currentBeat)
+		{
+			beatOfFuck = Conductor.instance.currentBeat;
+			doClone(FlxG.random.int(0, 1));
+		}
+
+		if (exSpikes.animation.frameIndex >= 3 && PlayState.instance.currentStage.getDad().animation.curAnim.name == 'singUP')
+			exSpikes.animation.pause();
+	}
+
+	function onNoteHit(event) {
+		if (PlayState.instance.currentStage.getDad().characterId == 'exTricky' && event.judgement == "perfect")
+		{
+			if (PlayState.instance.currentStage.getDad().animation.curAnim.name == 'singUP' && exSpikes.animation.finished)
+			{
+				exSpikes.visible = true;
+				if (exSpikes.animation.finished)
+					exSpikes.animation.play('spike');
+			}
+			
+			if (!exSpikes.animation.finished)
+			{
+				exSpikes.animation.resume();
+				exSpikes.animation.finishCallback = function(pog:String) {
+					trace('finished');
+					exSpikes.visible = false;
+					exSpikes.animation.finishCallback = null;
+				}
+			}
+		}
+	}
+
+	function doClone(side:Int)
+	{
+		switch(side) {
+			case 0:
+				if (cloneOne.alpha == 1)
+					return;
+
+				cloneOne.x = 760;
+				cloneOne.y = 460;
+				cloneOne.alpha = 1;
+
+				cloneOne.animation.play('clone');
+				cloneOne.animation.finishCallback = (pog:String) -> cloneOne.alpha = 0;
+			case 1:
+				if (cloneTwo.alpha == 1)
+					return;
+
+				cloneTwo.x = 700 + 390;
+				cloneTwo.y = 480;
+				cloneTwo.alpha = 1;
+
+				cloneTwo.animation.play('clone');
+				cloneTwo.animation.finishCallback = (pog:String) -> cloneTwo.alpha = 0;
+		}
+	}
+
+    function onSongRetry(event) 
+	{
+		remove(cloneOne);
+		remove(cloneTwo);
+		remove(exSpikes);
+		refresh();
+    }
+}

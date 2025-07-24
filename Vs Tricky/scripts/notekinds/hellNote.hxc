@@ -1,0 +1,101 @@
+import funkin.play.notes.notekind.NoteKind;
+
+import funkin.audio.FunkinSound;
+import funkin.play.PlayState;
+import funkin.Preferences;
+import funkin.play.notes.NoteSplash;
+import funkin.play.notes.Strumline;
+import funkin.play.notes.notekind.NoteKindManager;
+import funkin.data.notestyle.NoteStyleRegistry;
+
+
+import funkin.FunkinMemory;
+
+class HellNote extends NoteKind
+{
+	public function new(noteKind:String, description:String = "", ?noteStyleId:String, ?params:Array<NoteKindParam>)
+	{
+		super("trickyhell", "Hell Note (Tricky)", "hellnotes", []);
+		FunkinMemory.permanentCacheSound(Paths.sound("burnSound", "shared"));
+		FunkinMemory.permanentCacheTexture(Paths.image("notes/SmokeSplash", "shared"));
+	}
+
+	function onUpdate(event)
+	{
+		super.onUpdate(event);
+		for (note in getNotes())
+		{
+			//note.angle += event.elapsed * 100;
+		}
+	}
+
+	function onNoteIncoming(event)
+	{
+		super.onNoteIncoming(event);
+		if (event.note.kind == "trickyhell")
+		{
+			event.note.flipY = Preferences.downscroll;
+			event.note.lowPriority = true;
+			event.note.offset.x = 45;
+			event.note.offset.y = !Preferences.downscroll ? 150 : 260;
+		} 
+	}
+
+	function onNoteHit(event:HitNoteScriptEvent)
+	{
+		if (event.judgement == "perfect")
+		{
+    		super.onNoteHit(event);
+			return;
+		}
+
+		if (event.note.noteData.kind == "trickyhell")
+		{
+			event.cancelEvent();
+
+			FunkinSound.playOnce(Paths.sound("burnSound"));
+			PlayState.instance.health -= 0.45;
+			PlayState.instance.playerStrumline.killNote(event.note);
+
+			playNoteSplash(event);
+		}
+	}
+
+	function onNoteMiss(event:NoteScriptEvent)
+	{
+		if (event.note.noteData.kind == "trickyhell") 
+			event.cancelEvent();
+	}
+
+	public function playNoteSplash(event):Void
+	{
+		if (!PlayState.instance.playerStrumline.showNotesplash) return;
+
+		var splash:NoteSplash = this.constructNoteSplash(NoteStyleRegistry.instance.fetchEntry("hellnotes"));
+
+		if (splash != null)
+		{
+			var fuckHSCRIPT = NoteStyleRegistry.instance.fetchEntry("hellnotes");
+			splash.play(event.note.noteData.getDirection());
+
+			splash.x = PlayState.instance.playerStrumline.x;
+			splash.x += PlayState.instance.playerStrumline.getXPos(event.note.noteData.getDirection());
+			splash.x += Strumline.INITIAL_OFFSET;
+			splash.x += fuckHSCRIPT.getSplashOffsets()[0] * splash.scale.x;
+
+			splash.y = PlayState.instance.playerStrumline.y;
+			splash.y -= Strumline.INITIAL_OFFSET;
+			splash.y += fuckHSCRIPT.getSplashOffsets()[1] * splash.scale.y;
+		}
+	}
+
+	function constructNoteSplash(noteKindStyle):NoteSplash
+	{
+		var result:NoteSplash = null;
+
+		result = new NoteSplash(noteKindStyle);
+		PlayState.instance.playerStrumline.add(result);
+
+		return result;
+	}
+}

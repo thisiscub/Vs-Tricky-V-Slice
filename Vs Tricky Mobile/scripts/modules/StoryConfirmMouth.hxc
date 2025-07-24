@@ -1,0 +1,92 @@
+import flixel.FlxG;
+import funkin.modding.module.Module;
+import funkin.ui.story.StoryMenuState;
+import funkin.play.PlayState;
+import funkin.util.ReflectUtil;
+import funkin.Paths;
+import funkin.graphics.FunkinSprite;
+
+import funkin.FunkinMemory;
+
+class StoryConfirmJaws extends Module
+{
+	var jawsAdded:Bool = false;
+	var jawAhg:Bool = false;
+	var weNeedPlayStateJaws:Bool = false;
+
+	var jawFrames = Paths.getSparrowAtlas("Jaws");
+	var jawSpr:FunkinSprite;
+	function new()
+	{
+		super("tricky.StoryConfirmJaws");	
+		FunkinMemory.permanentCacheSound(Paths.sound("swipe"));
+		FunkinMemory.permanentCacheSound(Paths.sound("clink"));
+	}
+
+	function onUpdate(event)
+	{
+		super.onUpdate(event);
+		if (ReflectUtil.getClassNameOf(FlxG.state) == "funkin.ui.story.StoryMenuState")
+		{
+			//if (FlxG.state.selectedLevel)
+			//	FlxG.camera.angle += event.elapsed * 100;
+
+			if (!jawsAdded && !jawAhg)
+			{
+				jawSpr = new FunkinSprite(-300,-760);
+				jawSpr.frames = jawFrames;
+				jawSpr.animation.addByPrefix("y", "Jaws smol", 24, false);
+				jawSpr.animation.onFrameChange.add((name, n, i) -> if (i == 10 && jawSpr.alpha == 10) FlxG.sound.play(Paths.sound("clink")));
+				jawSpr.scale.set(1.38, 1.38);
+				jawSpr.zIndex = 99999;
+				FlxG.state.add(jawSpr);
+				jawSpr.animation.play("y");
+				jawSpr.scrollFactor.set();
+				jawSpr.alpha = 0;
+				
+				jawsAdded = true;
+				FlxG.state.refresh();
+			}
+
+			if (FlxG.state.selectedLevel && !jawAhg && FlxG.state.currentLevelId == "clown")
+			{
+				jawSpr.alpha = 1;
+				jawSpr.animation.play("y", true);
+				FlxG.sound.play(Paths.sound("swipe"));
+				weNeedPlayStateJaws = jawAhg = true;
+			}
+		}
+	}
+
+    function onStateChangeEnd(event:StateChangeScriptEvent)
+	{
+		jawAhg = jawsAdded = false;
+
+		super.onStateChangeEnd(event);
+
+		if (ReflectUtil.getClassNameOf(FlxG.state) == "funkin.ui.story.StoryMenuState")
+			jawFrames = Paths.getSparrowAtlas("Jaws");
+
+		//if (weNeedPlayStateJaws && Std.isOfType(event.targetState, PlayState))
+		//	createJaws();
+
+		super.onStateChangeEnd(event);
+	}
+
+	function createJaws()
+	{
+		var state = PlayState.instance;
+
+		jawSpr = new FunkinSprite(-400,-760);
+		jawSpr.frames = Paths.getSparrowAtlas("Jaws");
+	
+		jawSpr.animation.addByPrefix("y", "Jaws smol", 24, false);
+		jawSpr.scale.set(1.6, 1.6);
+		jawSpr.zIndex = 99999;
+		state.add(jawSpr);
+		jawSpr.camera = state.camCutscene;
+		jawSpr.animation.play("y", false, false, 18);
+		jawSpr.scrollFactor.set();
+		//jawSpr.alpha = 0;
+	}
+}

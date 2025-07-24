@@ -1,0 +1,50 @@
+{
+  "version": "2.2.2",
+  "songName": "Hellclown",
+  "artist": "Rozebud",
+  "divisions": 96,
+  "looped": false,
+  "offsets": {
+    "instrumental": 0,
+    "altInstrumentals": {    },
+    "vocals": {    }
+  },
+  "playData": {
+    "songVariations": [    ],
+    "difficulties": [
+      "easy",
+      "normal",
+      "hard"
+    ],
+    "characters": {
+      "player": "bfhell",
+      "girlfriend": "gfhell",
+      "opponent": "trickyH",
+      "instrumental": "",
+      "altInstrumentals": [      ]
+    },
+    "stage": "nevadaSpook",
+    "noteStyle": "funkin",
+    "album": "trickyvol",
+    "ratings": { "easy": 4, "normal": 7, "hard": 11 },
+    "previewStart": 0,
+    "previewEnd": 0
+  },
+  "generatedBy": "Friday Night Funkin' - v0.3.2",
+  "timeFormat": "ms",
+  "timeChanges": [
+    {
+      "t": 0,
+      "b": 0,
+      "bpm": 197,
+      "n": 4,
+      "d": 4,
+      "bt": [
+        4,
+        4,
+        4,
+        4
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+import funkin.play.character.MultiSparrowCharacter;
+
+class TrickyExpurgationCharacter extends MultiSparrowCharacter
+{
+	function new()
+	{
+		super("exTricky");
+	}
+
+	function onNoteHit(event:HitNoteScriptEvent)
+	{
+		super.onNoteHit(event);
+
+		if (event.judgement == "perfect" && event.note.kind == "exHank")
+		{
+			this.holdTimer = 0;
+			this.playAnimation("Hank", true);
+		}
+	}
+}

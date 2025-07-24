@@ -1,0 +1,61 @@
+{
+	"version": "1.0.0",
+	"name": "Tricky (Mask)",
+	"renderType": "multisparrow",
+	"assetPath": "characters/TrickyMask",
+	"singTime": 4,
+	"animations": [
+		{
+			"name": "idle",
+			"prefix": "Idle",
+			"offsets": [0, -117]
+		},
+		{
+			"name": "idle-hold",
+			"prefix": "Idle",
+			"frameIndices": [5, 6,7,8,9,10,11,12,13,14],
+			"looped": true,
+			"offsets": [0, -117]
+		},
+		{
+			"name": "singLEFT",
+			"prefix": "Sing Left0",
+			"offsets": [194, -95]
+		},
+		{
+			"name": "singLEFT-hold",
+			"prefix": "Sing Left Held",
+			"offsets": [194, -95]
+		},
+		{
+			"name": "singDOWN",
+			"prefix": "Sing Down0",
+			"offsets": [32, -168]
+		},
+		{
+			"name": "singDOWN-hold",
+			"prefix": "Sing Down Held",
+			"offsets": [32, -168]
+		},
+		{
+			"name": "singUP",
+			"prefix": "Sing Up0",
+			"offsets": [93, -100]
+		},
+		{
+			"name": "singUP-hold",
+			"prefix": "Sing Up Held",
+			"offsets": [93, -100]
+		},
+		{
+			"name": "singRIGHT",
+			"prefix": "Sing Right0",
+			"offsets": [16, -164]
+		},
+		{
+			"name": "singRIGHT-hold",
+			"prefix": "Sing Right Held",
+			"offsets": [16, -164]
+		}
+	]
+}

@@ -1,0 +1,63 @@
+{
+	"version": "1.0.0",
+	"name": "Tricky",
+	"renderType": "multisparrow",
+	"assetPath": "characters/tricky",
+	"singTime": 4,
+	"animations": [
+		{
+			"name": "idle",
+			"prefix": "Idle",
+			"looped": true,
+			"offsets": [0, -75]
+		},
+		{
+			"name": "singLEFT",
+			"prefix": "Sing Left",
+			"offsets": [103, -72]
+		},
+		{
+			"name": "singLEFT-hold",
+			"prefix": "Sing Left",
+			"frameIndices": [23, 24,25,26,27,28,29,30,31, 32, 33, 34, 35, 36],
+			"looped": true,
+			"offsets": [103, -72]
+		},
+		{
+			"name": "singDOWN",
+			"prefix": "Sing Down",
+			"offsets": [6, -84]
+		},
+		{
+			"name": "singDOWN-hold",
+			"prefix": "Sing Down",
+			"frameIndices": [23, 24,25,26,27,28,29,30,31, 32, 33, 34, 35, 36],
+			"looped": true,
+			"offsets": [6, -84]
+		},
+		{
+			"name": "singUP",
+			"prefix": "Sing Up",
+			"offsets": [93, -76]
+		},
+		{
+			"name": "singUP-hold",
+			"prefix": "Sing Up",
+			"frameIndices": [23, 24,25,26,27,28,29,30,31, 32, 33, 34, 35, 36],
+			"looped": true,
+			"offsets": [93, -76]
+		},
+		{
+			"name": "singRIGHT",
+			"prefix": "Sing Right",
+			"offsets": [16, -176]
+		},
+		{
+			"name": "singRIGHT-hold",
+			"prefix": "Sing Right",
+			"frameIndices": [23, 24,25,26,27,28,29,30,31, 32, 33, 34, 35, 36],
+			"looped": true,
+			"offsets": [16, -176]
+		}
+	]
+}

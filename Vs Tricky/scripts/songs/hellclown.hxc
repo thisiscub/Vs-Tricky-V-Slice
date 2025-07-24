@@ -1,0 +1,77 @@
+import funkin.play.song.Song;
+import funkin.play.PlayState;
+import funkin.Paths;
+import funkin.play.cutscene.VideoCutscene;
+import funkin.play.cutscene.CutsceneType;
+import funkin.graphics.FunkinSprite;
+import funkin.play.PlayStatePlaylist;
+import funkin.modding.PolymodHandler;
+import funkin.util.FileUtil;
+import funkin.play.cutscene.CutsceneType;
+import funkin.FunkinMemory;
+
+class HellClownSong extends Song {
+  	var hasPlayedCutscene:Bool;
+  	var hasPlayedSecondCutscene:Bool;
+
+  	public function new(){
+    	super('hellclown');
+    
+    	hasPlayedCutscene = false;
+    	hasPlayedSecondCutscene = false;
+  	}
+  
+  	public override function onCountdownStart(event:CountdownScriptEvent):Void {
+		super.onCountdownStart(event);
+	  
+		if (!PlayStatePlaylist.isStoryMode)
+    		hasPlayedCutscene = true;
+      
+    	if(!hasPlayedCutscene) { 
+    		hasPlayedCutscene = true;
+      
+      		event.cancel();
+			PlayState.instance.camHUD.visible = false;
+			PlayState.instance.isInCutscene = true;
+			VideoCutscene.play(Paths.videos("HELLCLOWN_ENGADGED"));
+		}
+  	}
+
+  	function onSongRetry(event:ScriptEvent) {
+    	super.onSongRetry(event);
+
+    	hasPlayedCutscene = true;
+  	}
+
+  	function onCreate(event:ScriptEvent):Void {
+		FunkinMemory.cacheTexture(Paths.image('notes/NOTE_fire'));
+		FunkinMemory.cacheTexture(Paths.image('notes/SmokeSplash'));
+
+    	super.onCreate(event);
+
+    	hasPlayedCutscene = false;
+  	}
+
+  	public override function onSongEnd(event:CountdownScriptEvent):Void {
+		super.onSongEnd(event);
+		
+		if (!PlayStatePlaylist.isStoryMode)
+     		hasPlayedSecondCutscene = true;
+      
+    	if (!hasPlayedSecondCutscene) {
+			var bgSprite = new FunkinSprite(-100, -100);
+			bgSprite.makeSolidColor(2000, 2500, 0xFF000000);
+			bgSprite.cameras = [PlayState.instance.camHUD]; // Show over the HUD.
+			bgSprite.zIndex = 1000000;
+			PlayState.instance.add(bgSprite);
+			PlayState.instance.refresh();
+
+    		event.cancel();
+			VideoCutscene.play(Paths.videos("TricksterMan"), CutsceneType.ENDING);
+
+    		hasPlayedSecondCutscene = true;
+    	} else {
+			hasPlayedSecondCutscene = false;
+		}
+	}
+}

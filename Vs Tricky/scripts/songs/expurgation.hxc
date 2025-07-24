@@ -1,0 +1,149 @@
+import flixel.FlxG;
+import flixel.math.FlxBasePoint;
+import flixel.tweens.FlxEase;
+import flixel.util.FlxTimer;
+import funkin.audio.FunkinSound;
+import funkin.Conductor;
+import funkin.graphics.FunkinSprite;
+import funkin.modding.module.ScriptedModule;
+import funkin.Paths;
+import funkin.play.PlayState;
+import funkin.play.song.Song;
+
+import funkin.FunkinMemory;
+
+class ExpurgationSong extends Song {
+	var trickySpawnSound:FunkinSound;
+  	var trickyGlitchSound:FunkinSound;
+  	var hasPlayedCutscene:Bool;
+	var gremlin:ScriptedModule;
+
+	var gremlinTimer = null;
+
+  	public function new() {
+    	super("expurgation");
+   
+    	hasPlayedCutscene = false;
+  	}
+
+	function onCreate(event:ScriptEvent) {
+		super.onCreate(event);
+		
+		if (PlayState.instance.playerStrumline.inArrowContorlSchemeMode) {
+			var wall:FunkinSprite = FunkinSprite.create(1000, -200, 'bgs/expurgation/lolz');
+			wall.setGraphicSize(Std.int(wall.width * 1.0));
+			wall.cameras = [PlayState.instance.camHUD];
+			wall.zIndex = 1700;
+			PlayState.instance.add(wall);
+			PlayState.instance.refresh();
+		}
+
+		gremlin = ScriptedModule.init("ExpurgationGremlin");
+
+		FunkinMemory.cacheSound(Paths.sound("expurgation/Trickyspawn", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("expurgation/TrickyGlitch", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("sound_clown_roar", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("firepillar", "shared"));
+
+    	hasPlayedCutscene = false;
+	}	
+
+  	public override function onCountdownStart(event:CountdownScriptEvent):Void {
+		if (gremlinTimer != null && gremlinTimer.active)
+			gremlinTimer.cancel();
+			
+		if (!hasPlayedCutscene) {
+			var pre:Float = Conductor.instance.beatLengthMs * -10;
+			Conductor.instance.update(pre);
+
+      		hasPlayedCutscene = true;
+      		PlayState.instance.currentStage.getDad().alpha = 0;
+
+      		event.cancelEvent();
+
+      		playCutscene();
+
+			return;
+		}		
+
+		gremlinTimer = new FlxTimer().start(25, function(tmr:FlxTimer) {
+			if (Conductor.instance.currentStep < 2400) {
+				if (PlayState.instance.mayPauseGame && !PlayState.instance.isGamePaused && PlayState.instance.health >= 1.5)
+					gremlin.scriptCall("appear", [40, 3]);
+				tmr.reset(25);
+			}
+		});
+	}
+
+	function onResume(e)
+	{
+		super.onResume(e);
+
+		if (gremlinTimer != null)
+			gremlinTimer.active = true;
+	}
+
+	function onPause(e)
+	{
+		super.onPause(e);
+
+		if (gremlinTimer != null)
+			gremlinTimer.active = false;
+	}
+
+  	function playCutscene() {
+		PlayState.instance.isInCutscene = true;
+
+  		var camPosDAD:FlxBasePoint = PlayState.instance.currentStage.getDad().cameraFocusPoint;
+
+		trickySpawnSound = FunkinSound.load(Paths.sound("expurgation/Trickyspawn"));
+		trickyGlitchSound = FunkinSound.load(Paths.sound("expurgation/TrickyGlitch"));
+		PlayState.instance.tweenCameraToPosition(camPosDAD.x, camPosDAD.y, 0, FlxEase.quadInOut);
+
+		var spawnAnim = FunkinSprite.createSparrow(700, 240, "bgs/expurgation/EXENTER", "clown");
+		spawnAnim.animation.addByPrefix("start", "Entrance", 24, false);
+		PlayState.instance.add(spawnAnim);
+
+		spawnAnim.animation.play("start");
+
+		trickySpawnSound.play();
+		spawnAnim.animation.finishCallback = function(pog:String) {
+			trickyGlitchSound.fadeOut();
+			PlayState.instance.currentStage.getDad().alpha = 1;
+			PlayState.instance.remove(spawnAnim);
+			PlayState.instance.isInCutscene = false;
+			PlayState.instance.startCountdown();
+		}
+
+		new FlxTimer().start(0.001, function(tmr:FlxTimer) {
+			if (spawnAnim.animation.frameIndex == 24)
+				trickyGlitchSound.play();
+			else
+				tmr.reset(0.001);
+		});
+	}
+
+  	function onSongRetry(event:ScriptEvent) {
+		PlayState.instance.needsReset = true;
+      	PlayState.instance.currentStage.getDad().alpha = 0;
+    	hasPlayedCutscene = false;
+  	}
+
+	public static var totalDamageTaken:float = 0;
+
+	function onNoteHit(event:HitNoteScriptEvent) {
+    	super.onNoteHit(event);
+
+    	if (event.judgement == "bad" || event.judgement == "shit")
+			gremlin.scriptCall("disappear");
+	}
+
+	function onNoteMiss(event:NoteScriptEvent) {
+    	super.onNoteMiss(event);
+
+		if (event.note.noteData.kind != "trickydeath") {
+			totalDamageTaken += 0.075;
+			gremlin.scriptCall("disappear");
+		}
+	}
+}

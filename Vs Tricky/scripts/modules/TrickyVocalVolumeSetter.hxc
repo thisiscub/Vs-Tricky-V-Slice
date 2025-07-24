@@ -1,0 +1,20 @@
+import funkin.modding.module.Module;
+import funkin.play.PlayState;
+
+class VocalVolumeSetter extends Module
+{
+	function new()
+	{
+		super("tricky.VocalVolumeSetter");	
+	}
+
+	var trickySongsArray = ["improbable-outset", "madness", "hellclown", "expurgation"];
+	function onNoteHit(event:HitNoteScriptEvent)
+	{
+		if (PlayState.instance == null)
+			return;
+			
+		if (event.judgement == "perfect" && trickySongsArray.contains(PlayState.instance.currentSong.id))
+			PlayState.instance.vocals.set_playerVolume(1);
+	}
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="clown">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="tricky week0"	x="620"	y="1325"	width="606"	height="615" frameX="-1" frameY="-41" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week1"	x="0"	y="1325"	width="610"	height="611" frameX="-9" frameY="-45" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week10"	x="630"	y="0"	width="619"	height="656" frameX="-5" frameY="-0" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week11"	x="1255"	y="666"	width="615"	height="649" frameX="-11" frameY="-7" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week12"	x="0"	y="653"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week13"	x="1259"	y="0"	width="615"	height="654" frameX="-11" frameY="-2" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week14"	x="0"	y="0"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week15"	x="630"	y="0"	width="619"	height="656" frameX="-5" frameY="-0" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week16"	x="630"	y="666"	width="615"	height="649" frameX="-11" frameY="-7" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week17"	x="0"	y="653"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week18"	x="1259"	y="0"	width="615"	height="654" frameX="-11" frameY="-2" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week19"	x="0"	y="0"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week2"	x="0"	y="653"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week20"	x="630"	y="0"	width="619"	height="656" frameX="-5" frameY="-0" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week21"	x="630"	y="666"	width="615"	height="649" frameX="-11" frameY="-7" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week22"	x="0"	y="653"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week23"	x="1259"	y="0"	width="615"	height="654" frameX="-11" frameY="-2" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week24"	x="0"	y="0"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week3"	x="1259"	y="0"	width="615"	height="654" frameX="-11" frameY="-2" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week4"	x="0"	y="0"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week5"	x="630"	y="0"	width="619"	height="656" frameX="-5" frameY="-0" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week6"	x="630"	y="666"	width="615"	height="649" frameX="-11" frameY="-7" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week7"	x="0"	y="653"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week8"	x="1259"	y="0"	width="615"	height="654" frameX="-11" frameY="-2" frameWidth="626" frameHeight="656"/>
+	<SubTexture name="tricky week9"	x="0"	y="0"	width="620"	height="643" frameX="-0" frameY="-13" frameWidth="626" frameHeight="656"/>
+</TextureAtlas>

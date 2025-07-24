@@ -1,0 +1,21 @@
+{
+  "title": "Vs Tricky",
+  "description": "Vs Tricky FNF port",
+  "contributors": [
+    {
+      "name": "cub",
+      "role": "",
+      "email": "",
+      "url": ""
+    },
+    {
+      "name": "PurSnake",
+      "role": "",
+      "email": "",
+      "url": ""
+    }
+  ],
+  "api_version": "0.7.0",
+  "mod_version": "1.0.0",
+  "license": "Apache-2.0"
+}

@@ -1,0 +1,85 @@
+{
+    "props": [
+      {
+        "danceEvery": 0,
+        "zIndex": 10,
+        "position": [-1000, -3500],
+        "scale": [5, 5],
+        "animType": "sparrow",
+        "name": "bg",
+        "isPixel": false,
+        "assetPath": "bgs/default/red",
+        "scroll": [0.95, 0.95],
+        "animations": []
+      },
+      {
+        "danceEvery": 0,
+        "zIndex": 20,
+        "position": [-4200, -1320],
+        "scale": [2.6, 2.6],
+        "animType": "sparrow",
+        "name": "front",
+        "isPixel": false,
+        "assetPath": "bgs/hellclwn/island_but_red",
+        "scroll": [0.95, 0.95],
+        "animations": []
+      },
+      {
+        "danceEvery": 1,
+        "zIndex": 30,
+        "position": [1040, 180],
+        "scale": [1.55, 1.55],
+        "animType": "sparrow",
+        "name": "hank",
+        "isPixel": false,
+        "assetPath": "bgs/hellclwn/Hank",
+        "scroll": [0.95, 0.95],
+        "startingAnimation": "dance",
+        "animations": [
+          {
+            "name": "dance",
+            "prefix": "Hank",
+            "frameRate": 24,
+            "looped": true,
+            "flipX": false,
+            "flipY": false
+          }
+        ]
+      },
+      {
+        "danceEvery": 0,
+        "zIndex": 400,
+        "position": [-470, -150],
+        "scale": [1.4, 1.4],
+        "alpha": 0.7,
+        "blend": "screen",
+        "animType": "sparrow",
+        "name": "blendLight",
+        "isPixel": false,
+        "assetPath": "bgs/default/hue",
+        "scroll": [1.2, 1.2],
+        "animations": []
+      }
+    ],
+    "cameraZoom": 0.35,
+    "version": "1.0.0",
+    "characters": {
+      "bf": {
+        "zIndex": 300,
+        "position": [2260, 1240],
+        "cameraOffsets": [-250, -360]
+      },
+      "dad": {
+        "zIndex": 200,
+        "position": [400, 1240],
+        "cameraOffsets": [640, 400]
+      },
+      "gf": {
+        "zIndex": 100,
+        "cameraOffsets": [0, 0],
+        "position": [1750, 1140]
+      }
+    },
+    "name": "Nevada (Hellclown)"
+  }
+  

@@ -1,0 +1,28 @@
+import funkin.graphics.FunkinSprite;
+import funkin.Paths;
+import funkin.play.character.MultiSparrowCharacter;
+import funkin.play.GameOverSubState;
+
+class BFTrickyCharacter extends MultiSparrowCharacter
+{
+	function new()
+	{
+		super("bftricky");
+	}
+
+	function onCreate(event:ScriptEvent)
+	{
+		FunkinSprite.cacheTexture(Paths.image("characters/signDeath"));
+
+		super.onCreate(event);
+
+		GameOverSubState.musicSuffix = "Trickster";
+		GameOverSubState.blueBallSuffix = "-sign";
+	}
+
+	function onNoteMiss(event:NoteScriptEvent)
+	{
+		if (event.note.noteData.kind != "trickyhell" && event.note.noteData.kind != "trickydeath")
+			super.onNoteMiss(event);
+	}
+}

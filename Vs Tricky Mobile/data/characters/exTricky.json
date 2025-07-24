@@ -1,0 +1,38 @@
+{
+	"version": "1.0.0",
+	"name": "Tricky (Expurgation)",
+	"renderType": "multisparrow",
+	"assetPath": "characters/EXTRICKY",
+	"singTime": 4,
+	"animations": [
+		{
+			"name": "idle",
+			"prefix": "Idle"
+		},
+		{
+			"name": "singUP",
+			"prefix": "Sing Up",
+			"offsets": [0, 100]
+		},
+		{
+			"name": "singLEFT",
+			"prefix": "Sing Left",
+			"offsets": [127, 20]
+		},
+		{
+			"name": "singRIGHT",
+			"prefix": "Sing Right",
+			"offsets": [-209, -29]
+		},
+		{
+			"name": "singDOWN",
+			"prefix": "Sing Down",
+			"offsets": [-100, -340]
+		},
+		{
+			"name": "Hank",
+			"prefix": "Hank",
+			"looped": true
+		}
+	]
+}

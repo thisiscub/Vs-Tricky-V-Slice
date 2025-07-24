@@ -1,0 +1,12 @@
+import funkin.ui.story.Level;
+
+class ExLevel extends Level {
+	function new() {
+		super("expurgation");
+	}
+
+	override public function isUnlocked()
+	{
+		return Save.instance.hasBeatenLevel("clown");
+	}
+}

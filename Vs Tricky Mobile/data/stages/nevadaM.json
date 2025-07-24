@@ -1,0 +1,51 @@
+{
+    "props": [  
+      {
+        "danceEvery": 0,
+        "zIndex": 20,
+        "position": [-1100, -460],
+        "scale": [1.4, 1.4],
+        "animType": "sparrow",
+        "name": "front",
+        "isPixel": false,
+        "assetPath": "bgs/default/island_but_rocks_float",
+        "scroll": [0.95, 0.95],
+        "animations": []
+      },
+      {
+        "danceEvery": 0,
+        "zIndex": 400,
+        "position": [-470, -150],
+        "scale": [1.4, 1.4],
+        "alpha": 0.7,
+        "blend": "screen",
+        "animType": "sparrow",
+        "name": "blendLight",
+        "isPixel": false,
+        "assetPath": "bgs/default/hue",
+        "scroll": [1.2, 1.2],
+        "animations": []
+      }
+    ],
+    "cameraZoom": 0.75,
+    "version": "1.0.0",
+    "characters": {
+      "bf": {
+        "zIndex": 300,
+        "position": [2300, 1240],
+        "cameraOffsets": [-150, -100]
+      },
+      "dad": {
+        "zIndex": 200,
+        "position": [1350, 1180],
+        "cameraOffsets": [140, -25]
+      },
+      "gf": {
+        "zIndex": 100,
+        "cameraOffsets": [0, 0],
+        "position": [1800, 1140]
+      }
+    },
+    "name": "Nevada (Madness)"
+  }
+  

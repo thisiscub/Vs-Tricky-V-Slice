@@ -1,0 +1,67 @@
+import funkin.play.notes.notekind.NoteKind;
+
+import funkin.audio.FunkinSound;
+import funkin.play.PlayState;
+import funkin.Preferences;
+import funkin.play.notes.NoteSplash;
+import funkin.play.notes.Strumline;
+import funkin.play.notes.notekind.NoteKindManager;
+import funkin.data.notestyle.NoteStyleRegistry;
+
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+
+class DeathNote extends NoteKind
+{
+	public function new(noteKind:String, description:String = "", ?noteStyleId:String, ?params:Array<NoteKindParam>)
+	{
+		super("trickydeath", "Death Note (Tricky)", "deathnotes", []);
+	}
+
+	function onUpdate(event)
+	{
+		super.onUpdate(event);
+		for (note in getNotes())
+		{
+			//note.angle += event.elapsed * 100;
+		}
+	}
+
+	function onNoteIncoming(event)
+	{
+		super.onNoteIncoming(event);
+		if (event.note.kind == "trickydeath")
+		{
+			event.note.lowPriority = true;
+			event.note.offset.y = 90;
+		} 
+	}
+
+	function onNoteMiss(event:NoteScriptEvent)
+	{
+		if (event.note.noteData.kind == "trickydeath") 
+			event.cancelEvent();
+	}
+
+	function onNoteHit(event:HitNoteScriptEvent)
+	{
+		if (event.judgement == "perfect")
+		{
+    		super.onNoteHit(event);
+			return;
+		}
+
+		if (event.note.noteData.kind == "trickydeath")
+		{
+			event.cancelEvent();
+
+			FlxTween.globalManager.forEach((tween:FlxTween) -> tween.active = false);
+			FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer.active = false);
+
+			PlayState.instance.playerStrumline.killNote(event.note);
+			FunkinSound.playOnce(Paths.sound("death"));
+			PlayState.instance.health = -1;
+		}	
+	}
+}

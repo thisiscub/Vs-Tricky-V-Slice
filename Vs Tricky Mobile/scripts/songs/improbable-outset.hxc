@@ -1,0 +1,267 @@
+import funkin.play.song.Song;
+import funkin.play.PlayState;
+import funkin.play.PlayStatePlaylist;
+import funkin.graphics.FunkinSprite;
+import funkin.audio.FunkinSound;
+import flixel.text.FlxText;
+import funkin.Paths;
+import flixel.util.FlxTimer;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.FlxG;
+
+import funkin.FunkinMemory;
+
+import funkin.modding.module.ModuleHandler;
+
+class ImprobableOutsetSong extends Song {
+  	public function new() {
+    	super('improbable-outset');
+    
+    	hasPlayedCutscene = false;
+  	}
+
+  	var hasPlayedCutscene:Bool;
+  	var wind:FunkinSound;
+  	var ground:FunkinSound;
+  	var cloth:FunkinSound;
+ 	var signFall:FunkinSound;
+  	var buildUp:FunkinSound;
+
+	function onCreate(event:ScriptEvent) {
+		super.onCreate(event);
+
+    	hasPlayedCutscene = false;
+	}
+  
+  	public override function onCountdownStart(event:CountdownScriptEvent):Void
+	{
+	  	super.onCountdownStart(event);
+	  
+	  	if (!PlayStatePlaylist.isStoryMode)
+      		hasPlayedCutscene = true;
+      
+    	if(!hasPlayedCutscene){
+      		hasPlayedCutscene = true;
+      		PlayState.instance.currentStage.getDad().alpha = 0.000001;
+      		PlayState.instance.currentStage.getGirlfriend().alpha = 0.000001;
+      		PlayState.instance.camHUD.alpha = 0.000001;
+      
+      		event.cancel();
+      
+      		playCutscene();
+    	}
+	}
+	
+  	function playCutscene() {
+		FunkinMemory.cacheSound(Paths.sound("wind", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("ground", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("cloth", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("signFall", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("trickyIsTriggered", "shared"));
+
+		var state = PlayState.instance;
+  		var camPosBF:Array<Float> = [state.currentStage.getBoyfriend().cameraFocusPoint.x + 100, state.currentStage.getBoyfriend().cameraFocusPoint.y];
+  		var camPosDAD:Array<Float> = [state.currentStage.getDad().cameraFocusPoint.x, state.currentStage.getDad().cameraFocusPoint.y];
+  	
+	  	state.isInCutscene = true;
+	  
+	  	wind = FunkinSound.load(Paths.sound('wind'), 0, true);
+	  	ground = FunkinSound.load(Paths.sound('ground'));
+	 	cloth = FunkinSound.load(Paths.sound('cloth'));
+	  	signFall = FunkinSound.load(Paths.sound('signFall'));
+	  	buildUp = FunkinSound.load(Paths.sound('trickyIsTriggered'));
+
+		var playonce:Bool = false;
+		var bfScared:Bool = false;
+		var faded:Bool = false;
+		var wat:Bool = false;
+		var jawSpr = FunkinSprite.createSparrow(-300, -760, 'Jaws');
+		jawSpr.antialiasing = true;
+		jawSpr.animation.addByPrefix("Close", "Jaws smol", 24, false);
+		jawSpr.scale.set(1.38, 1.38);
+		jawSpr.scrollFactor.set();
+		jawSpr.camera = state.camCutscene;
+
+		var nevada = FunkinSprite.createSparrow(1160, 780, 'cutscenes/somewhere');
+		nevada.antialiasing = true;
+		nevada.animation.addByPrefix('nevada', 'somewhere idfk', 24, false);
+		var animation = FunkinSprite.createSparrow(850, 450, 'cutscenes/intro');
+		animation.antialiasing = true;
+		animation.animation.addByPrefix('fuckyou', 'Symbol', 24, false);
+		animation.setGraphicSize(Std.int(animation.width * 1.2));
+		nevada.setGraphicSize(Std.int(nevada.width * 0.5));
+		state.add(animation);
+		
+		state.camCutscene.visible = true;
+		
+		var black = new FunkinSprite(-300, -120).makeSolidColor(FlxG.width * 2, FlxG.height * 2, 0xFF130000);
+		black.scrollFactor.set();
+		black.alpha = 0;
+		var black3 = new FunkinSprite(-300, -140).makeSolidColor(FlxG.width * 2, FlxG.height * 2, 0xFF130000);
+		black3.scrollFactor.set();
+		black3.alpha = 0;
+		var red = new FunkinSprite(-300, -120).makeSolidColor(FlxG.width * 2, FlxG.height * 2, 0xFF130000);
+		red.scrollFactor.set();
+		red.alpha = 1;
+		
+		state.add(red);
+    	state.add(black);
+		state.add(black3);
+
+		state.add(nevada);
+
+		state.add(jawSpr);
+
+		jawSpr.animation.play("Close", false, false, 18);
+		jawSpr.animation.pause();
+
+		state.tweenCameraToPosition(camPosBF[0], camPosBF[1], 0, FlxEase.quadInOut);
+	  	new FlxTimer().start(0.01, function(tmr:FlxTimer) {
+			if (!wat)
+			{
+				tmr.reset(1.5);
+				wat = true;
+			}
+			else
+			{
+				if (wat && jawSpr.animation.frameIndex == 18)
+					jawSpr.animation.resume();
+      		}
+      
+			if (jawSpr.animation.finished)
+			{
+			  new FlxTimer().start(0.01, function(tmr:FlxTimer) {
+			  	if (state.currentStage.getBoyfriend().animation.finished && !bfScared)
+			  		state.currentStage.getBoyfriend().animation.play('idle');
+			  	else if (state.currentStage.getBoyfriend().animation.finished)
+			  		state.currentStage.getBoyfriend().animation.play('scared');
+			  	if (nevada.animation.curAnim == null)
+			  		nevada.animation.play('nevada');
+
+			  	if (!nevada.animation.finished && nevada.animation.curAnim.name == 'nevada') {
+			  		if (nevada.animation.frameIndex >= 41 && red.alpha != 0)
+			  			red.alpha -= 0.1;
+
+			  		if (nevada.animation.frameIndex == 34)
+			  			wind.fadeIn();
+			  		tmr.reset(0.1);
+			  	}
+
+			  	if (animation.animation.curAnim == null && red.alpha == 0) {
+			  		state.remove(red);
+			  		animation.animation.play('fuckyou', false, false, 40);
+			  	}
+
+			  	if (!animation.animation.finished && animation.animation.curAnim.name == 'fuckyou' && red.alpha == 0 && !faded) {
+			  		tmr.reset(0.01);
+
+			  		switch(animation.animation.frameIndex) {
+			  			case 73:
+			  				ground.play();
+			  			case 84:
+			  				signFall.play();
+			  			case 170:
+			  				if (!playonce)
+							{
+								doStatis();
+			  					playonce = true;
+			  				}
+			  				cloth.play();
+			  			case 192:
+							//if (!doStitatiOnce)
+							//	doStatis();
+
+			  				buildUp.fadeIn();
+			  			case 219:
+			  				buildUp.fadeOut();
+			  		}
+
+			  		if (animation.animation.frameIndex == 190)
+			  			bfScared = true;
+
+			  		if (animation.animation.frameIndex >= 115 && animation.animation.frameIndex < 200) {
+		          		state.tweenCameraToPosition(camPosDAD[0] - 100, camPosDAD[1] + 100, 0.1, FlxEase.quadInOut);
+             			state.tweenCameraZoom(1.1, 0.1, true, FlxEase.quadInOut);
+			  		} else if (animation.animation.frameIndex > 200 && FlxG.camera.zoom != state.currentStage.get_camZoom()) {
+			  			FlxG.camera.shake(0.01, 3);
+			  			if (FlxG.camera.zoom < state.currentStage.get_camZoom()) {
+                			state.tweenCameraZoom(state.currentStage.get_camZoom(), 0.1, true, FlxEase.quadInOut);
+		            		state.tweenCameraToPosition(state.currentStage.getDad().cameraFocusPoint.x, state.currentStage.getDad().cameraFocusPoint.y, 0.1, FlxEase.quadInOut);
+			  			} else {
+                			state.tweenCameraZoom(state.currentStage.get_camZoom() - 0.008, 0.1, true, FlxEase.quadInOut);
+		            		state.tweenCameraToPosition(state.currentStage.getDad().cameraFocusPoint.x, state.currentStage.getDad().cameraFocusPoint.y, 0.1, FlxEase.quadInOut);
+			  			}
+			  		}
+			  		if (animation.animation.frameIndex >= 235)
+			  			faded = true;
+			  	} else if (red.alpha == 0 && faded) {
+			  		if (black.alpha != 1)
+					{
+			  			black.alpha += 0.4;
+			  			tmr.reset(0.1);
+			  		} else
+					{
+			  			if (black.alpha == 1 && black.visible)
+						{
+			  				black.visible = false;
+			  				black3.alpha = 1;
+			  				state.remove(animation);
+			  				state.remove(red);
+			  				state.remove(black);
+			  				state.remove(black3);
+                			state.currentStage.getDad().alpha = 1;
+                			state.currentStage.getGirlfriend().alpha = 1;
+			  				state.add(black);
+			  				state.add(black3);
+			  				tmr.reset(0.3);
+			  				FlxG.camera.stopFX();
+      		      			state.camHUD.alpha = 1;
+      		      			state.isInCutscene = false;
+			  			} 
+						else if (black3.alpha != 0) 
+						{
+			  				black3.alpha -= 0.25;
+			  				tmr.reset(0.25);
+			  			} 
+						else 
+						{
+			  				wind.fadeOut();
+                			state.startCountdown();
+			  			}
+			  		}
+			    }
+			  });
+			} 
+			else
+			{
+				if (jawSpr.animation.frameIndex == 30)
+					jawSpr.alpha = 0;
+				tmr.reset(0.1);
+			}
+		});
+	}
+
+	var doStitatiOnce:Bool = false;
+	function doStatis()
+	{
+		doStitatiOnce = true;
+		var textStuff = ModuleHandler.getModule("tricky.StaticTexthandler");
+		textStuff.createSpookyText(["OMFG CLOWN!!!!"], 960, FlxG.height * 0.9 + 230);
+		new FlxTimer().start(0.5, _ -> {
+			textStuff.staticSpr.alpha = 0;
+			textStuff.spookyText.alpha = 0;
+			textStuff.resetSpookyText = true;
+		});
+	}
+
+	function onUpdate(event:ScriptEvent) {
+		super.onUpdate(event);
+	}
+
+  	function onSongRetry(event:ScriptEvent) {
+		super.onSongRetry(event);
+
+    	hasPlayedCutscene = true;
+  	}
+}

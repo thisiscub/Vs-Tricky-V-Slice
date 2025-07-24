@@ -1,0 +1,43 @@
+{
+	"version": "1.0.0",
+	"name": "Tricky (Hellclown)",
+	"renderType": "multisparrow",
+	"assetPath": "characters/Tricky/Idle",
+	"singTime": 4,
+	"animations": [
+		{
+			"name": "idle",
+			"prefix": "Phase 3 Tricky Idle",
+			"offsets": [325, 0],
+			"looped": true
+		},
+		{
+			"name": "singLEFT",
+			"assetPath": "characters/Tricky/Left",
+			"prefix": "Proper Left",
+			"offsets": [518, 25],
+			"looped": true
+		},
+		{
+			"name": "singDOWN",
+			"assetPath": "characters/Tricky/Down",
+			"prefix": "Proper Down",
+			"offsets": [475, -450],
+			"looped": true
+		},
+		{
+			"name": "singUP",
+			"assetPath": "characters/Tricky/Up",
+			"prefix": "Proper Up",
+			"offsets": [575, -450],
+			"looped": true
+		},
+		{
+			"name": "singRIGHT",
+			"assetPath": "characters/Tricky/Right",
+			"prefix": "Proper Right",
+			"offsets": [498, -300],
+			"looped": true
+		}
+	]
+}

@@ -1,0 +1,284 @@
+import funkin.play.song.Song;
+import funkin.play.PlayState;
+import funkin.play.PlayStatePlaylist;
+import funkin.graphics.FunkinSprite;
+import funkin.audio.FunkinSound;
+import flixel.text.FlxText;
+import funkin.Paths;
+import flixel.util.FlxTimer;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.FlxG;
+import funkin.play.cutscene.VideoCutscene;
+import funkin.modding.PolymodHandler;
+import funkin.util.FileUtil;
+
+import funkin.FunkinMemory;
+import funkin.modding.module.ModuleHandler;
+
+class MadnessSong extends Song
+{
+  	var hasPlayedCutscene:Bool;
+  	var hasPlayedSecondCutscene:Bool;
+
+  	public function new() {
+    	super('madness');
+    
+    	hasPlayedCutscene = false;
+    	hasPlayedSecondCutscene = false;
+  	}
+  	
+	function onCreate(event:ScriptEvent) {
+		super.onCreate(event);
+    
+		FunkinMemory.cacheSound(Paths.sound("honkers", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("energy shot", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("sound_clown_roar", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("firepillar", "shared"));
+
+    	hasPlayedCutscene = false;	
+	}
+
+  	public override function onCountdownStart(event:CountdownScriptEvent):Void {
+		super.onCountdownStart(event);
+	  
+		if (!PlayStatePlaylist.isStoryMode)
+     		hasPlayedCutscene = true;
+	  
+    	if(!hasPlayedCutscene) { 
+    		hasPlayedCutscene = true;
+      
+      		event.cancel();
+
+			PlayState.instance.camHUD.visible = false;
+
+			PlayState.instance.isInCutscene = true;
+
+            VideoCutscene.play(Paths.videos("HankFuckingShootsTricky"));
+		}
+  	}
+
+  	function onSongRetry(event:ScriptEvent) {
+    	super.onSongRetry(event);
+
+    	hasPlayedCutscene = true;
+    	hasPlayedSecondCutscene = false;
+  	}
+
+  	function playCutscene()
+	{
+		
+		var done:Bool = false;
+
+		var black = new FunkinSprite(-300, -120).makeSolidColor(FlxG.width * 2, FlxG.height * 2, 0xFFFFFFFF);
+		black.scrollFactor.set();
+		black.alpha = 0;
+
+		var animation:FunkinSprite = FunkinSprite.createSparrow(1100, 670, 'cutscenes/trickman');
+		animation.antialiasing = true;
+		animation.animation.addByPrefix('cut1','Cutscene 1', 24, false);
+		animation.animation.addByPrefix('cut2','Cutscene 2', 24, false);
+		animation.animation.addByPrefix('cut3','Cutscene 3', 24, false);
+		animation.animation.addByPrefix('cut4','Cutscene 4', 24, false);
+		animation.animation.addByPrefix('pillar','Pillar Beam Tricky', 24, false);
+		animation.setGraphicSize(Std.int(animation.width * 1.5));
+		animation.alpha = 0;
+
+		PlayState.instance.tweenCameraToPosition(PlayState.instance.currentStage.getDad().cameraFocusPoint.x, PlayState.instance.currentStage.getDad().cameraFocusPoint.y + 100, 3, FlxEase.quadInOut);
+
+		PlayState.instance.isInCutscene = true;
+
+		var sounders:FunkinSound = FunkinSound.load(Paths.sound('honkers'), 0, true);
+		var energy:FunkinSound = FunkinSound.load(Paths.sound('energy shot'));
+		var roar:FunkinSound = FunkinSound.load(Paths.sound('sound_clown_roar'));
+		var pillar:FunkinSound = FunkinSound.load(Paths.sound('firepillar'));
+
+		var fade = new FunkinSprite(-300, -120).makeSolidColor(FlxG.width * 2, FlxG.height * 2, 0xFF130000);
+		fade.scrollFactor.set();
+		fade.alpha = 0;
+
+		PlayState.instance.add(animation);
+
+		PlayState.instance.add(black);
+
+		PlayState.instance.add(fade);
+
+		var startFading:Bool = false;
+		var varNumbaTwo:Bool = false;
+		var fadeDone:Bool = false;
+
+		sounders.fadeIn(30);
+
+		var textStuff = ModuleHandler.getModule("tricky.StaticTexthandler");
+
+		new FlxTimer().start(0.01, function(tmr:FlxTimer) {
+			if (fade.alpha != 1 && !varNumbaTwo) {
+				PlayState.instance.camHUD.alpha -= 0.1;
+				fade.alpha += 0.1;
+				if (fade.alpha == 1) {
+					varNumbaTwo = true;
+
+					animation.alpha = 1;
+					
+      				PlayState.instance.currentStage.getDad().alpha = 0.000001;
+				}
+				tmr.reset(0.1);
+			} else {
+				fade.alpha -= 0.1;
+				if (fade.alpha <= 0.5)
+					fadeDone = true;
+				tmr.reset(0.1);
+			}
+		});
+
+		var roarPlayed:Bool = false;
+
+		new FlxTimer().start(0.01, function(tmr:FlxTimer) {
+			if (!fadeDone)
+				tmr.reset(0.1)
+			else {
+				if (animation.animation == null || animation.animation.name == null) {
+					animation.animation.play("cut1");
+					//createSpookyText(cutsceneText[0], 1100, FlxG.height * 0.9 + 400);
+					textStuff.createSpookyText(["YOU DO NOT KILL CLOWN"], 1100, FlxG.height * 0.9 + 400);
+					new FlxTimer().start(0.3, _ -> {
+						textStuff.staticSpr.alpha = 0;
+					});
+					new FlxTimer().start(6.5, _ -> {
+						new FlxTimer().start(0.3, _ -> {
+							textStuff.staticSpr.alpha = 0;
+							textStuff.spookyText.alpha = 0;
+							textStuff.resetSpookyText = true;
+						});
+						textStuff.staticSpr.alpha = 0.5;
+						FlxG.sound.play(Paths.sound('staticSound'));
+					});
+				}
+
+				if (!animation.animation.finished) {
+					tmr.reset(0.1);
+
+					switch(animation.animation.frameIndex) {
+						case 104:
+							if (animation.animation.name == 'cut1')
+							{
+								textStuff.staticSpr.alpha = 0;
+								textStuff.spookyText.alpha = 0;
+								textStuff.resetSpookyText = true;
+							}
+							//	resetSpookyTextManual();
+					}
+
+					if (animation.animation.name == 'pillar') {
+						if (animation.animation.frameIndex >= 85)
+							startFading = true;
+						FlxG.camera.shake(0.05);
+					}
+				} else {
+					//resetSpookyTextManual();
+					textStuff.staticSpr.alpha = 0;
+					textStuff.spookyText.alpha = 0;
+					textStuff.resetSpookyText = true;
+								
+					switch(animation.animation.name) {
+						case 'cut1':
+							animation.animation.play('cut2');
+						case 'cut2':
+							animation.animation.play('cut3');
+							energy.play();
+						case 'cut3':
+							animation.animation.play('cut4');
+							//createSpookyText(cutsceneText[1], 1100, FlxG.height * 0.9 + 400);
+							textStuff.createSpookyText(["CLOWN KILLS YOU!!!!!!"], 1100, FlxG.height * 0.9 + 400);
+							new FlxTimer().start(0.3, _ -> {
+								textStuff.staticSpr.alpha = 0;
+							});
+							new FlxTimer().start(8., _ -> {
+								new FlxTimer().start(0.3, _ -> {
+									textStuff.staticSpr.alpha = 0;
+									textStuff.spookyText.alpha = 0;
+									textStuff.resetSpookyText = true;
+								});
+								textStuff.staticSpr.alpha = 0.5;
+								FlxG.sound.play(Paths.sound('staticSound'));
+							});
+
+							animation.y += 10;
+							animation.x -= 95;
+						case 'cut4':
+							//resetSpookyTextManual();
+							textStuff.staticSpr.alpha = 0;
+							textStuff.spookyText.alpha = 0;
+							textStuff.resetSpookyText = true;
+
+
+							sounders.fadeOut();
+							pillar.fadeIn(4);
+							animation.animation.play('pillar');
+							animation.y -= 660;
+							animation.x -= 220;
+					}
+					tmr.reset(0.1);
+				}
+
+				if (startFading) {
+					sounders.fadeOut();
+					
+					if (black.alpha != 1) {
+						tmr.reset(0.1);
+						black.alpha += 0.02;
+
+						if (black.alpha >= 0.7 && !roarPlayed) {
+							roar.play();
+							roarPlayed = true;
+						}
+					} else if (done) {
+						PlayState.instance.endSong();
+						FlxG.camera.stopFX();
+					} else {
+						done = true;
+						tmr.reset(5);
+					}
+				}
+			}
+		});
+	}
+
+	function onUpdate(event:ScriptEvent) {
+		super.onUpdate(event);
+
+		/*
+    	if (spookyText != null && PlayState.instance.isInCutscene) {
+		  	spookyText.angle = FlxG.random.int(-5,5); 
+  
+		  	if (tstatic.alpha != 0)
+		  		tstatic.alpha = FlxG.random.float(0.1, 0.5);
+    	}*/
+		
+		/*
+		var resetTimer:FlxTimer;
+	
+		if (spookyRendered && resetTimer == null) {
+			resetTimer = new FlxTimer().start(0.5, function(_) {
+				tstatic.alpha = 0;
+				resetTimer = null;
+			});
+		}*/
+	}
+
+	function onSongEnd(event:CountdownScriptEvent) {
+		super.onSongEnd(event);
+		
+		if (!PlayStatePlaylist.isStoryMode)
+     		hasPlayedSecondCutscene = true;
+      
+    	if(!hasPlayedSecondCutscene)
+		{ 
+    		hasPlayedSecondCutscene = true;
+      
+      		event.cancel();
+
+			playCutscene();
+		}
+	}
+}

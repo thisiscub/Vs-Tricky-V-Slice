@@ -1,0 +1,161 @@
+import flixel.FlxG;
+import flixel.math.FlxMath;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import funkin.audio.FunkinSound;
+import funkin.graphics.FunkinSprite;
+import funkin.Paths;
+import funkin.play.PlayState;
+import funkin.Preferences;
+import funkin.modding.module.Module;
+
+import flixel.tweens.FlxTweenManager;
+
+import funkin.FunkinMemory;
+
+class ExpurgationGremlin extends Module {
+	var mustStop:Bool = false;
+
+	var coolTweens = [];
+
+	var currentGremlin;
+
+	var tween1:FlxTween = null;
+	var tween2:FlxTween = null;
+
+	public function new() {
+		super("ExpurgationGremlin");
+	}
+
+	function onResume(e)
+	{
+		super.onResume(e);
+
+		if (tween1 != null)
+			tween1.active = true;
+			
+		if (tween2 != null)
+			tween2.active = true;
+	}
+
+	function onPause(e)
+	{
+		super.onPause(e);
+
+		if (tween1 != null)
+			tween1.active = false;
+			
+		if (tween2 != null)
+			tween2.active = false;
+	}
+
+	function onSongRetry(event:ScriptEvent)
+	{
+		super.onSongRetry(event);
+		if (currentGremlin != null)
+		{	
+			currentGremlin.visible = false;
+			currentGremlin.destory();
+			currentGremlin = null;
+		}
+	}
+
+	function onCreate(event:ScriptEvent) {
+		FunkinSprite.cacheTexture(Paths.image("mechanics/HP GREMLIN"));
+		FunkinMemory.permanentCacheTexture(Paths.image("mechanics/Sign_Post_Mechanic", "shared"));
+	}
+
+	public function appear(hpToTake:Int, duration:Int):Void {
+		mustStop = false;
+
+		tween1 = null;
+		tween2 = null;
+
+		var gramlan:FunkinSprite = FunkinSprite.createSparrow(0, 0, "mechanics/HP GREMLIN");
+		gramlan.setGraphicSize(Std.int(gramlan.width * 0.76));
+		gramlan.cameras = [PlayState.instance.camHUD];
+		gramlan.zIndex = 1500;
+
+		gramlan.x = PlayState.instance.iconP1.x;
+		gramlan.y = PlayState.instance.healthBarBG.y - 325;
+
+		gramlan.animation.addByIndices("come", "HP Gremlin ANIMATION", [0, 1], "", 24, false);
+		gramlan.animation.addByIndices("grab", "HP Gremlin ANIMATION", [2, 3, 4, 5, 6, 7, 8, 9, 10 ,11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], "", 24, false);
+		gramlan.animation.addByIndices("hold", "HP Gremlin ANIMATION", [25, 26, 27, 28],"",24);
+		gramlan.animation.addByIndices("release", "HP Gremlin ANIMATION", [29, 30, 31, 32, 33], "", 24, false);
+
+		gramlan.antialiasing = true;
+		PlayState.instance.add(gramlan);
+
+		currentGremlin = gramlan;
+
+		if (Preferences.downscroll)
+		{
+			gramlan.flipY = true;
+			gramlan.y -= 150;
+		}
+
+		var startHealth = PlayState.instance.health;
+		var toHealth = (hpToTake / 100) * startHealth; // simple math, convert it to a percentage then get the percentage of the health
+
+		var perct = toHealth / 2 * 100;
+
+		FunkinSound.playOnce(Paths.sound("expurgation/GremlinWoosh"));
+
+		gramlan.animation.play("come");
+		new FlxTimer().start(0.14, function(tmr:FlxTimer) {
+			gramlan.animation.play("grab");
+			tween1 = FlxTween.tween(gramlan, {x: PlayState.instance.iconP1.x - 140}, 1,
+			{
+				ease: FlxEase.elasticIn,
+				onComplete: function(tween1:FlxTween)
+				{
+					tween1 = null;
+					gramlan.animation.play("hold");
+					tween2 = FlxTween.tween(
+						gramlan,
+						{
+							x: (PlayState.instance.healthBar.x + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(perct, 0, 100, 100, 0) * 0.01) - 26)) - 75
+						},
+						duration,
+						{
+							onUpdate: function(tween2:FlxTween)
+							{
+								if (mustStop)
+								{
+									gramlan.animation.play("release");
+									gramlan.animation.finishCallback = function(pog:String)
+									{
+										gramlan.visible = false;
+										tween2.cancel();
+									}
+								}
+								else
+								{
+									var pp = FlxMath.lerp(startHealth, toHealth, tween2.percent);
+									if (pp <= 0)
+										pp = 0.1;
+									PlayState.instance.health = pp;
+								}
+							},
+							onComplete: function(tween2:FlxTween)
+							{
+								tween2 = null;
+								gramlan.animation.play("release");
+								gramlan.animation.finishCallback = function(pog:String)
+								{
+									PlayState.instance.remove(gramlan);
+								}
+							}
+						}
+					);
+				}
+			});
+		});
+	}
+
+	public function disappear():Void {
+		mustStop = true;
+	}
+}

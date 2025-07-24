@@ -1,0 +1,95 @@
+{
+  "props": [
+    {
+      "danceEvery": 0,
+      "zIndex": 10,
+      "position": [-1400, -2100],
+      "scale": [4, 4],
+      "animType": "sparrow",
+      "name": "bg",
+      "isPixel": false,
+      "assetPath": "bgs/expurgation/bg",
+      "scroll": [0.95, 0.95],
+      "animations": []
+    },
+    {
+      "danceEvery": 0,
+      "zIndex": 110,
+      "position": [700, 1070],
+      "scale": [1.55, 1.55],
+      "animType": "sparrow",
+      "name": "hole",
+      "isPixel": false,
+      "assetPath": "bgs/expurgation/Spawnhole_Ground_BACK",
+      "scroll": [0.95, 0.95],
+      "animations": []
+    },
+    {
+      "danceEvery": 0,
+      "zIndex": 210,
+      "position": [720, 1118],
+      "scale": [1.3, 1.3],
+      "animType": "sparrow",
+      "name": "coverHole",
+      "isPixel": false,
+      "assetPath": "bgs/expurgation/Spawnhole_Ground_COVER",
+      "scroll": [0.95, 0.95],
+      "animations": []
+    },
+    {
+      "danceEvery": 0,
+      "zIndex": 209,
+      "position": [280, 1150],
+      "scale": [1.55, 1.55],
+      "animType": "sparrow",
+      "name": "cover",
+      "isPixel": false,
+      "assetPath": "bgs/expurgation/cover",
+      "scroll": [0.95, 0.95],
+      "animations": []
+    },
+    {
+      "danceEvery": 0,
+      "zIndex": 50,
+      "position": [2170, -460],
+      "animType": "sparrow",
+      "name": "energywall",
+      "isPixel": false,
+      "assetPath": "bgs/expurgation/Energywall",
+      "scroll": [0.95, 0.95],
+      "animations": []
+    },
+    {
+      "danceEvery": 0,
+      "zIndex": 60,
+      "position": [-670, -345],
+      "scale": [1.55, 1.55],
+      "animType": "sparrow",
+      "name": "ground",
+      "isPixel": false,
+      "assetPath": "bgs/expurgation/daBackground",
+      "scroll": [0.95, 0.95],
+      "animations": []
+    }
+  ],
+  "cameraZoom": 0.55,
+  "version": "1.0.0",
+  "characters": {
+    "bf": {
+      "zIndex": 300,
+      "position": [2160, 1300],
+      "cameraOffsets": [-100, -300]
+    },
+    "dad": {
+      "zIndex": 200,
+      "position": [1150, 1200],
+      "cameraOffsets": [300, -50]
+    },
+    "gf": {
+      "zIndex": 100,
+      "cameraOffsets": [0, 0],
+      "position": [1750, 1140]
+    }
+  },
+  "name": "Auditor Hell"
+}

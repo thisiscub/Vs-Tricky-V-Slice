@@ -1,0 +1,50 @@
+{
+  "version": "2.2.2",
+  "songName": "Improbable Outset",
+  "artist": "Rozebud",
+  "divisions": 96,
+  "looped": false,
+  "offsets": {
+    "instrumental": 0,
+    "altInstrumentals": {    },
+    "vocals": {    }
+  },
+  "playData": {
+    "songVariations": [    ],
+    "difficulties": [
+      "easy",
+      "normal",
+      "hard"
+    ],
+    "characters": {
+      "player": "bftricky",
+      "girlfriend": "gf",
+      "opponent": "trickyMask",
+      "instrumental": "",
+      "altInstrumentals": [      ]
+    },
+    "stage": "nevada",
+    "noteStyle": "funkin",
+    "album": "trickyvol",
+    "ratings": { "easy": 2, "normal": 3, "hard": 6 },
+    "previewStart": 0,
+    "previewEnd": 0
+  },
+  "generatedBy": "Friday Night Funkin' - v0.3.2",
+  "timeFormat": "ms",
+  "timeChanges": [
+    {
+      "t": 0,
+      "b": 0,
+      "bpm": 200,
+      "n": 4,
+      "d": 4,
+      "bt": [
+        4,
+        4,
+        4,
+        4
+      ]
+    }
+  ]
+}

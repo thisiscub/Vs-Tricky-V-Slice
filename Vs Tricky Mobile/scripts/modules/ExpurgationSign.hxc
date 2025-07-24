@@ -1,0 +1,63 @@
+import flixel.FlxG;
+import funkin.graphics.FunkinSprite;
+import funkin.modding.module.Module;
+import funkin.Paths;
+import funkin.play.PlayState;
+
+import funkin.FunkinMemory;
+
+class ExpurgationSign extends Module {
+	public function new() {
+		super("ExpurgationSign");
+	}
+
+	function onCreate(event:ScriptEvent) {
+		FunkinMemory.permanentCacheTexture(Paths.image("mechanics/Sign_Post_Mechanic", "shared"));
+	}
+
+	public function appear(signType:Int = 0, flipX:Bool = false):Void {
+		var sign:FunkinSprite = FunkinSprite.createSparrow(0, 0, "mechanics/Sign_Post_Mechanic");
+		sign.setGraphicSize(Std.int(sign.width * 0.67));
+
+		var scrollOffset:Int = PlayState.instance.playerStrumline.inArrowContorlSchemeMode ? 900 : 650;
+
+		switch (signType) {
+			case 0:
+				sign.animation.addByPrefix("sign", "Signature Stop Sign 1", 24, false);
+
+				sign.x = FlxG.width - scrollOffset;
+
+				sign.angle = -90;
+				sign.y = -300;
+			case 1:
+				sign.animation.addByPrefix("sign", "Signature Stop Sign 3", 24, false);
+
+				sign.x = FlxG.width - scrollOffset - 130;
+
+				sign.angle = -90;
+				if (PlayState.instance.playerStrumline.isDownscroll)
+					sign.y = -395;
+				else
+					sign.y = -980;
+			case 2:
+				sign.animation.addByPrefix("sign", "Signature Stop Sign 4", 24, false);
+
+				sign.x = FlxG.width - scrollOffset - 420;
+
+				sign.angle = -90;
+				sign.y = -145;
+		}
+
+		sign.flipX = flipX;
+		sign.animation.play("sign");
+		sign.cameras = [PlayState.instance.camHUD];
+    	sign.zIndex = 1500;
+
+		PlayState.instance.add(sign);
+		PlayState.instance.refresh();
+
+		sign.animation.finishCallback = function(pog:String) {
+			PlayState.instance.remove(sign);
+		}
+	}
+}
