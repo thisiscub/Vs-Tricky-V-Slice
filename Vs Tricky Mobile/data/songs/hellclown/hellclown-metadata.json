@@ -27,6 +27,7 @@
     "stage": "nevadaSpook",
     "noteStyle": "funkin",
     "album": "trickyvol",
+    "stickerPack": "tricky",
     "ratings": { "easy": 4, "normal": 7, "hard": 11 },
     "previewStart": 0,
     "previewEnd": 0

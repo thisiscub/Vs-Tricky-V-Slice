@@ -27,6 +27,7 @@
     "stage": "nevadaM",
     "noteStyle": "funkin",
     "album": "trickyvol",
+    "stickerPack": "tricky",
     "ratings": { "easy": 4, "normal": 5, "hard": 8 },
     "previewStart": 0,
     "previewEnd": 0
