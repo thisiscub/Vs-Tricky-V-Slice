@@ -47,6 +47,33 @@ class ExpurgationSong extends Song {
 
 	function onCreate(event:ScriptEvent) {
 		super.onCreate(event);
+
+		////////////////////////////
+		//FunkinMemory CANT HANDLE 
+		var cccc:FunkinSprite = FunkinSprite.createSparrow(0, 0, "mechanics/Sign_Post_Mechanic");
+		cccc.animation.addByPrefix("sign", "Signature Stop Sign 1", 24, false);
+		cccc.animation.play("sign");
+		cccc.cameras = [PlayState.instance.camHUD];
+    	cccc.zIndex = 1500;
+		cccc.alpha = 0.000001;
+		PlayState.instance.add(cccc);
+
+		var cccc2:FunkinSprite = FunkinSprite.createSparrow(0, 0, "mechanics/HP GREMLIN");
+		cccc2.animation.addByIndices("come", "HP Gremlin ANIMATION", [0, 1], "", 24, false);
+		cccc2.animation.play("come");
+		cccc2.cameras = [PlayState.instance.camHUD];
+    	cccc2.zIndex = 1500;
+		cccc2.alpha = 0.000001;
+		PlayState.instance.add(cccc2);
+
+		var cccc3:FunkinSprite = FunkinSprite.createSparrow(0, 0, "notes/NOTE_death");
+		cccc3.animation.addByPrefix("sign", "Green Arrow", 24, false);
+		cccc3.animation.play("sign");
+		cccc3.cameras = [PlayState.instance.camHUD];
+    	cccc3.zIndex = 1500;
+		cccc3.alpha = 0.000001;
+		PlayState.instance.add(cccc3);
+		//////////////////////////////
 		
 		var playerNotesX = PlayState.instance.playerStrumline.x + PlayState.instance.playerStrumline.getXPos(3);
 
@@ -68,6 +95,11 @@ class ExpurgationSong extends Song {
 	}	
 
   	public override function onCountdownStart(event:CountdownScriptEvent):Void {
+
+		//AGAIN AND AGAIN
+
+		trace("AAAAAA");
+
 		if (!hasPlayedCutscene) {
 			var pre:Float = Conductor.instance.beatLengthMs * -10;
 			Conductor.instance.update(pre);

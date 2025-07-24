@@ -4,15 +4,18 @@
   "contributors": [
     {
       "name": "cub",
-      "role": "",
-      "email": "",
-      "url": ""
+      "role": "Coder/Organized it all",
+      "url": "https://x.com/thisiscub"
     },
     {
       "name": "PurSnake",
-      "role": "",
-      "email": "",
-      "url": ""
+      "role": "Programmer/Coder",
+      "url": "https://x.com/PurSnake"
+    },
+    {
+      "name": "LeonidKosherny",
+      "role": "Pixel Artist and e.t.c.",
+      "url": "https://x.com/LeonidKosherny"
     }
   ],
   "api_version": "0.7.0",

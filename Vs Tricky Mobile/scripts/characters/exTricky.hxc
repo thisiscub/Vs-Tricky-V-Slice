@@ -2,7 +2,7 @@ import funkin.play.character.MultiSparrowCharacter;
 import funkin.play.stage.Stage;
 import funkin.play.PlayState;
 import funkin.graphics.FunkinSprite;
-
+import funkin.FunkinMemory;
 class TrickyExpurgationCharacter extends MultiSparrowCharacter
 {
 	var exSpikes:FlxSprite;
@@ -13,6 +13,11 @@ class TrickyExpurgationCharacter extends MultiSparrowCharacter
 	}
 
 	function onAdd(e) {
+
+		FunkinMemory.permanentCacheTexture(Paths.sound("mechanics/Sign_Post_Mechanic", "shared"));
+		FunkinMemory.permanentCacheTexture(Paths.sound("mechanics/HP GREMLIN", "shared"));
+		FunkinMemory.permanentCacheTexture(Paths.sound("notes/NOTE_death", "shared"));
+
 		super.onAdd(e);
 
 		exSpikes = FunkinSprite.createSparrow(550, 470, 'bgs/expurgation/FloorSpikes');

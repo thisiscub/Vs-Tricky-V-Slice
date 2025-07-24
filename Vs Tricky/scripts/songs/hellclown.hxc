@@ -47,6 +47,15 @@ class HellClownSong extends Song {
 		FunkinMemory.cacheTexture(Paths.image('notes/NOTE_fire'));
 		FunkinMemory.cacheTexture(Paths.image('notes/SmokeSplash'));
 
+		FunkinMemory.cacheTexture(Paths.sound("notes/NOTE_fire", "shared")); //AGAIN MOTHERFUCKER
+		FunkinMemory.cacheTexture(Paths.sound("notes/SmokeSplash", "shared"));
+
+		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Idle", "shared"));
+		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Left", "shared"));
+		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Down", "shared"));
+		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Up", "shared"));
+		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Right", "shared"));
+
     	super.onCreate(event);
 
     	hasPlayedCutscene = false;

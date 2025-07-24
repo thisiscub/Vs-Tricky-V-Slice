@@ -9,26 +9,59 @@
 			"name": "idle",
 			"prefix": "Idle"
 		},
-		{
-			"name": "singUP",
-			"prefix": "Sing Up",
-			"offsets": [0, 100]
-		},
+
 		{
 			"name": "singLEFT",
 			"prefix": "Sing Left",
 			"offsets": [127, 20]
 		},
 		{
-			"name": "singRIGHT",
-			"prefix": "Sing Right",
-			"offsets": [-209, -29]
+			"name": "singLEFT-hold",
+			"looped": true,
+			"prefix": "Sing Left",
+			"frameIndices": [4,5,6,7],
+			"offsets": [127, 20]
 		},
+
 		{
 			"name": "singDOWN",
 			"prefix": "Sing Down",
 			"offsets": [-100, -340]
 		},
+		{
+			"name": "singDOWN-hold",
+			"looped": true,
+			"prefix": "Sing Down",
+			"frameIndices": [4,5,6,7],
+			"offsets": [-100, -340]
+		},
+
+		{
+			"name": "singUP",
+			"prefix": "Sing Up",
+			"offsets": [0, 100]
+		},
+		{
+			"name": "singUP-hold",
+			"looped": true,
+			"prefix": "Sing Up",
+			"frameIndices": [4,5,6,7],
+			"offsets": [0, 100]
+		},
+
+		{
+			"name": "singRIGHT",
+			"prefix": "Sing Right",
+			"offsets": [-209, -29]
+		},
+		{
+			"name": "singRIGHT-hold",
+			"looped": true,
+			"prefix": "Sing Right",
+			"frameIndices": [4,5,6,7],
+			"offsets": [-209, -29]
+		},
+
 		{
 			"name": "Hank",
 			"prefix": "Hank",
