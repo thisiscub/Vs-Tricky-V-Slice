@@ -2,54 +2,28 @@ import funkin.play.notes.notekind.NoteKind;
 
 import funkin.audio.FunkinSound;
 import funkin.play.PlayState;
-import funkin.Preferences;
-import funkin.play.notes.NoteSplash;
 import funkin.play.notes.Strumline;
-import funkin.play.notes.notekind.NoteKindManager;
-import funkin.data.notestyle.NoteStyleRegistry;
 import funkin.Highscore;
-
-
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxTimer;
-
-import funkin.FunkinMemory;
 
 class DeathNote extends NoteKind
 {
 	public function new(noteKind:String, description:String = "", ?noteStyleId:String, ?params:Array<NoteKindParam>)
 	{
 		super("trickydeath", "Death Note (Tricky)", "deathnotes", []);
-		FunkinMemory.permanentCacheSound(Paths.sound("death"));
-	}
-
-	function onUpdate(event)
-	{
-		super.onUpdate(event);
-		for (note in getNotes())
-		{
-			//note.angle += event.elapsed * 100;
-		}
 	}
 
 	function onNoteIncoming(event)
 	{
 		super.onNoteIncoming(event);
-		if (event.note.kind == "trickydeath")
-		{
-			event.note.lowPriority = true;
-			event.note.offset.y = 90;
-		} 
+
+		Highscore.tallies.totalNotes--;
+		lowPriority = true;
+		offset.y = 90;
 	}
 
 	function onNoteMiss(event:NoteScriptEvent)
 	{
-		if (event.note.noteData.kind == "trickydeath") {
-			event.cancelEvent();
-			
-			Highscore.tallies.totalNotes--;
-		}
+		event.cancel();
 	}
 
 	function onNoteHit(event:HitNoteScriptEvent)
@@ -60,13 +34,10 @@ class DeathNote extends NoteKind
 			return;
 		}
 
-		if (event.note.noteData.kind == "trickydeath")
-		{
-			event.cancelEvent();
+		event.cancel();
 
-			PlayState.instance.playerStrumline.killNote(event.note);
-			FunkinSound.playOnce(Paths.sound("death"));
-			PlayState.instance.health = -1;
-		}	
+		PlayState.instance.playerStrumline.killNote(this);
+		FunkinSound.playOnce(Paths.sound("death"));
+		PlayState.instance.health = -1;
 	}
 }
