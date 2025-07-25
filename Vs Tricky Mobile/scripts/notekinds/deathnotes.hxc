@@ -17,8 +17,8 @@ class DeathNote extends NoteKind
 		super.onNoteIncoming(event);
 
 		Highscore.tallies.totalNotes--;
-		lowPriority = true;
-		offset.y = 90;
+		event.note.lowPriority = true;
+		event.note.offset.y = 90;
 	}
 
 	function onNoteMiss(event:NoteScriptEvent)
@@ -36,7 +36,7 @@ class DeathNote extends NoteKind
 
 		event.cancel();
 
-		PlayState.instance.playerStrumline.killNote(this);
+		PlayState.instance.playerStrumline.killNote(event.note);
 		FunkinSound.playOnce(Paths.sound("death"));
 		PlayState.instance.health = -1;
 	}
