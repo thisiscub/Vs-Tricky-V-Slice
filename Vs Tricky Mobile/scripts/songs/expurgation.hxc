@@ -21,8 +21,8 @@ class ExpurgationSong extends Song
   	var trickyGlitchSound:FunkinSound;
 	var gremlin:ScriptedModule;
 
-	static var gremlinTimer = null;
-
+	static var timerResetter:Array<FlxTimer> = [];
+	
   	public function new()
 	{
     	super("expurgation");
@@ -97,7 +97,7 @@ class ExpurgationSong extends Song
 		if (!PlayState.instance.isInCutscene)
 		{
       		event.cancelEvent();
-
+			
       		playCutscene();
 		}
 	}
@@ -138,11 +138,16 @@ class ExpurgationSong extends Song
 			PlayState.instance.remove(spawnAnim);
 			PlayState.instance.startCountdown();
 			PlayState.instance.isInCutscene = false;
-
-			// honestly, i genuinelly have no idea why i have to set timer to null. i guess it can't override it? lol
-			gremlinTimer = null;
-
-			gremlinTimer = new FlxTimer().start(25, function(tmr:FlxTimer)
+		
+			for (timer in timerResetter) {
+				timer.cancel();
+				timer = null;
+			}
+			// im pissed because i HAVE to cancel out the timer using an array
+			// making the timer STATIC doesn't make it actually static.
+			// so, SOMEHOW it creates another timer when i do this
+			//                           ↓
+			var gremlinTimer:FlxTimer = new FlxTimer().start(25, function(tmr:FlxTimer)
 			{
 				if (Conductor.instance.currentStep < 2400)
 				{
@@ -151,13 +156,14 @@ class ExpurgationSong extends Song
 					tmr.reset(25);
 				}
 			});
+			timerResetter.push(gremlinTimer);
 		}
 	}
 
   	function onSongRetry(event:ScriptEvent)
 	{
       	PlayState.instance.currentStage.getDad().alpha = 0;
-
+			
 		gremlin.forcedDisappear();
 		var signMeh = ModuleHandler.getModule("ExpurgationSign");
 		signMeh.leaveTheScreen();
