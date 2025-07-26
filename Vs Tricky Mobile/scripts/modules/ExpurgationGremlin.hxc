@@ -17,7 +17,9 @@ class ExpurgationGremlin extends Module
 	static var mustStop:Bool = false;
 	static var persist:Bool = false;
 
-	static var currentGremlin = null;
+	static var currentGremlin:FunkinSprite = null;
+	
+	var totalDamageTaken:Array<Float> = [ ];
 
 	var tween1:FlxTween = null;
 	var tween2:FlxTween = null;
@@ -27,12 +29,21 @@ class ExpurgationGremlin extends Module
 		super("ExpurgationGremlin");
 	}
 
-	function appear(hpToTake:Int, duration:Int, persistbool:Bool):Void
+	function appear(hpPercent:Int, duration:Int, persistbool:Bool):Void
 	{
 		persist = persistbool;
 		
 		if (PlayState.instance.health < 1.5 && !persist)
 			return;
+		
+		for (damage in totalDamageTaken) {
+			damage = null;
+			destroy(damage);
+		}
+		
+		var damageTaken:Float = 0.0;
+		
+		totalDamageTaken.push(damageTaken);
 		
 		mustStop = false;
 
@@ -64,7 +75,7 @@ class ExpurgationGremlin extends Module
 		}
 
 		var startHealth = PlayState.instance.health;
-		var toHealth = (hpToTake / 100) * startHealth; // simple math, convert it to a percentage then get the percentage of the health
+		var toHealth = (hpPercent / 100) * startHealth; // simple math, convert it to a percentage then get the percentage of the health
 
 		var perct = toHealth / 2 * 100;
 
@@ -111,6 +122,9 @@ class ExpurgationGremlin extends Module
 							{
 								tween2 = null;
 								gramlan.animation.play("release");
+								// i only implemented it in 0.1.1 LOL im so stupid. anyways now you cant miss on expurgation ending
+								if (persist && totalDamageTaken >= 0.7)
+									PlayState.instance.health -= totalDamageTaken;
 								gramlan.animation.finishCallback = function(pog:String)
 								{
 									PlayState.instance.remove(gramlan);
@@ -134,6 +148,15 @@ class ExpurgationGremlin extends Module
 		if (currentGremlin != null) {
 			mustStop = true;
 			persist = false;
+			totalDamageTaken = 0;
+		}
+	}
+	
+	function addToTotalDamage(amount:Float)
+	{
+		// yaay! im so happy! i have to do array bs again! fuck hscprit
+		for (damage in totalDamageTaken) {
+			damage += amount;
 		}
 	}
 }

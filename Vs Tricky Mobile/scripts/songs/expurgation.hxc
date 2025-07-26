@@ -146,7 +146,7 @@ class ExpurgationSong extends Song
 			// im pissed because i HAVE to cancel out the timer using an array
 			// making the timer STATIC doesn't make it actually static.
 			// so, SOMEHOW it creates another timer when i do this
-			//                           ↓
+			//                         \/
 			var gremlinTimer:FlxTimer = new FlxTimer().start(25, function(tmr:FlxTimer)
 			{
 				if (Conductor.instance.currentStep < 2400)
@@ -179,7 +179,18 @@ class ExpurgationSong extends Song
     	super.onNoteHit(event);
 
     	if (event.judgement == "bad" || event.judgement == "shit")
+		{
+			switch (event.judgement)
+			{
+				case "bad":
+					gremlin.addToTotalDamage(0.06);
+				case "shit":
+					// idk why shit rating adds more than miss. anyways its what kade did not me
+					gremlin.addToTotalDamage(0.2);
+			}
+		
 			gremlin.disappear();
+		}
 	}
 
 	function onNoteMiss(event:NoteScriptEvent)
@@ -188,7 +199,7 @@ class ExpurgationSong extends Song
 
 		if (event.note.noteData.kind != "trickydeath")
 		{
-			PlayState.instance.health -= 0.125;
+			gremlin.addToTotalDamage(0.075);
 			gremlin.disappear();
 		}
 	}
