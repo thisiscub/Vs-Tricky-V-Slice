@@ -1,6 +1,7 @@
 import funkin.modding.module.ScriptedModule;
 import funkin.play.event.SongEvent;
 import funkin.play.PlayState;
+import funkin.modding.module.ModuleHandler;
 
 class ExpurgationGremlinEvent extends SongEvent
 {
@@ -14,8 +15,9 @@ class ExpurgationGremlinEvent extends SongEvent
 		if (PlayState.instance == null || PlayState.instance.currentStage == null)
 			return;
 
-		var gremlin:ScriptedModule = ScriptedModule.init("ExpurgationGremlin");
-		gremlin.scriptCall("appear", [data.value.hpToTake, data.value.duration, data.value.persist]);
+		var gremlin = ModuleHandler.getModule("ExpurgationGremlin");
+		gremlin.forcedDisappear();
+		gremlin.appear(data.value.hpToTake, data.value.duration, data.value.persist);
 
 		PlayState.instance.currentStage.refresh();
 	}

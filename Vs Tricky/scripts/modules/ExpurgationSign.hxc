@@ -14,9 +14,6 @@ class ExpurgationSign extends Module
 	public function new()
 	{
 		super("ExpurgationSign");
-		FunkinMemory.permanentCacheTexture(Paths.sound("mechanics/Sign_Post_Mechanic", "shared"));
-		FunkinMemory.permanentCacheTexture(Paths.sound("mechanics/HP GREMLIN", "shared"));
-		FunkinMemory.permanentCacheTexture(Paths.sound("notes/NOTE_death", "shared"));
 	}
 
 	public function appear(signType:Int = 0, flipX:Bool = false):Void

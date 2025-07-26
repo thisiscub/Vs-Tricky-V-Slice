@@ -15,7 +15,7 @@ class StaticTexthandler extends Module
     public var allowWorking:Bool = false;
 	function new()
 	{
-		super("tricky.StaticTexthandler");	
+		super("tricky.StaticTexthandler");
 		FunkinMemory.permanentCacheTexture(Paths.image("bgs/TrickyStatic", "shared"));
 	}
 
@@ -52,9 +52,9 @@ class StaticTexthandler extends Module
     {
         allowWorking = true;
 		spookyRendered = false;
-        
+
 		spookyText = null;
-		
+
 		if (!trickySongsArray.contains(PlayState.instance.currentChart.song.id))
 		{
 			allowWorking = false;
@@ -88,7 +88,7 @@ class StaticTexthandler extends Module
     function onNoteMiss(event)
     {
     	super.onNoteMiss(event);
-		
+
 		if (PlayState.instance == null || !allowWorking)
 			return;
 
@@ -104,17 +104,17 @@ class StaticTexthandler extends Module
 
 	}
 
-    function onUpdate(event:ScriptEvent) 
+    function onUpdate(event:ScriptEvent)
     {
 		super.onUpdate(event);
 
         if (!allowWorking || PlayState.instance.isGamePaused)
             return;
 
-		if (spookyRendered) 
+		if (spookyRendered)
         {
             if (spookyText != null && spookyText.angle != null)
-			    spookyText.angle = FlxG.random.int(-5,5); 
+			    spookyText.angle = FlxG.random.int(-5,5);
 
 			if (staticSpr.alpha != 0)
 				staticSpr.alpha = FlxG.random.float(0.1,0.5);
@@ -153,13 +153,13 @@ class StaticTexthandler extends Module
 			resetSpookyText = true;
         }
 	}
-	
+
     override function onSongRetry(event) {
 		if (!allowWorking)
 			return;
 
 		if (spookyText != null && PlayState.instance.members.indexOf(spookyText) != -1)
-			PlayState.instance.remove(spookyText);	
+			PlayState.instance.remove(spookyText);
 
 		spookyRendered = false;
 		staticSpr.alpha = 0;

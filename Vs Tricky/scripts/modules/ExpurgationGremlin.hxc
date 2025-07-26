@@ -19,7 +19,7 @@ class ExpurgationGremlin extends Module
 
 	static var currentGremlin:FunkinSprite = null;
 
-	var totalDamageTaken:Array<Float> = [ ];
+	public var totalDamageTaken:Float = 0;
 
 	var tween1:FlxTween = null;
 	var tween2:FlxTween = null;
@@ -36,14 +36,7 @@ class ExpurgationGremlin extends Module
 		if (PlayState.instance.health < 1.5 && !persist)
 			return;
 
-		for (damage in totalDamageTaken) {
-			damage = null;
-			//destroy(damage);
-		}
-
-		var damageTaken:Float = 0.0;
-
-		totalDamageTaken.push(damageTaken);
+		totalDamageTaken = 0;
 
 		mustStop = false;
 
@@ -75,8 +68,7 @@ class ExpurgationGremlin extends Module
 		}
 
 		var startHealth = PlayState.instance.health;
-		var toHealth = (hpPercent / 100) * startHealth; // simple math, convert it to a percentage then get the percentage of the health
-
+		var toHealth = (hpPercent / 100) * startHealth;
 		var perct = toHealth / 2 * 100;
 
 		FunkinSound.playOnce(Paths.sound("expurgation/GremlinWoosh"));
@@ -98,37 +90,30 @@ class ExpurgationGremlin extends Module
 						},
 						duration,
 						{
-							onUpdate: function(tween2:FlxTween)
+							onUpdate: (tween2:FlxTween) ->
 							{
 								// now as i made mustStop static i think persist works even when using an event. yippee!
 								if (mustStop && !persist)
 								{
 									tween2 = null;
 									gramlan.animation.play("release");
-									gramlan.animation.finishCallback = function(pog:String)
-									{
-										PlayState.instance.remove(gramlan);
-									}
+									gramlan.animation.finishCallback = (pog:String) -> PlayState.instance.remove(gramlan);
 								}
 								else
 								{
-									var pp = FlxMath.lerp(startHealth, toHealth, tween2.percent);
+									final pp = FlxMath.lerp(startHealth, toHealth, tween2.percent);
 									if (pp <= 0)
 										pp = 0.1;
 									PlayState.instance.health = pp;
 								}
 							},
-							onComplete: function(tween2:FlxTween)
+							onComplete: (tween2:FlxTween) ->
 							{
 								tween2 = null;
 								gramlan.animation.play("release");
-								// i only implemented it in 0.1.1 LOL im so stupid. anyways now you cant miss on expurgation ending
 								if (persist && totalDamageTaken >= 0.7)
 									PlayState.instance.health -= totalDamageTaken;
-								gramlan.animation.finishCallback = function(pog:String)
-								{
-									PlayState.instance.remove(gramlan);
-								}
+								gramlan.animation.finishCallback = (pog:String) -> PlayState.instance.remove(gramlan);
 							}
 						}
 					);
@@ -145,18 +130,16 @@ class ExpurgationGremlin extends Module
 
 	function forcedDisappear():Void
 	{
-		if (currentGremlin != null) {
+		if (currentGremlin != null)
+		{
 			mustStop = true;
 			persist = false;
 			totalDamageTaken = 0;
 		}
 	}
 
-	function addToTotalDamage(amount:Float)
+	public function addToTotalDamage(amount:Float)
 	{
-		// yaay! im so happy! i have to do array bs again! fuck hscprit
-		for (damage in totalDamageTaken) {
-			damage += amount;
-		}
+		totalDamageTaken += amount; //:spondgbopd: - PurSnake
 	}
 }

@@ -18,15 +18,15 @@ import funkin.modding.module.ModuleHandler;
 class ExpurgationSong extends Song
 {
 	var trickySpawnSound:FunkinSound;
-  	var trickyGlitchSound:FunkinSound;
+	var trickyGlitchSound:FunkinSound;
 	var gremlin:ScriptedModule;
 
 	static var timerResetter:Array<FlxTimer> = [];
-	
-  	public function new()
+
+	public function new()
 	{
-    	super("expurgation");
-  	}
+		super("expurgation");
+	}
 
 	function onResume(e)
 	{
@@ -49,7 +49,7 @@ class ExpurgationSong extends Song
 		super.onCreate(event);
 
 		////////////////////////////
-		//FunkinMemory CANT HANDLE 
+		//FunkinMemory CANT HANDLE
 		var cccc:FunkinSprite = FunkinSprite.createSparrow(0, 0, "mechanics/Sign_Post_Mechanic");
 		cccc.animation.addByPrefix("sign", "Signature Stop Sign 1", 24, false);
 		cccc.animation.play("sign");
@@ -79,35 +79,35 @@ class ExpurgationSong extends Song
 
 		FunkinMemory.cacheSound(Paths.sound("expurgation/Trickyspawn", "shared"));
 		FunkinMemory.cacheSound(Paths.sound("expurgation/TrickyGlitch", "shared"));
-		
+
 		var playerNotesX = PlayState.instance.playerStrumline.x + PlayState.instance.playerStrumline.getXPos(3);
 
-		var wall:FunkinSprite = FunkinSprite.create(playerNotesX + 200, -200, 'bgs/expurgation/lolz');	
+		var wall:FunkinSprite = FunkinSprite.create(playerNotesX + 200, -200, 'bgs/expurgation/lolz');
 		wall.setGraphicSize(Std.int(wall.width * 1.0));
 		wall.cameras = [PlayState.instance.camHUD];
 		wall.zIndex = 1700;
 		PlayState.instance.add(wall);
 		PlayState.instance.refresh();
 
-		gremlin = ScriptedModule.init("ExpurgationGremlin");
-	}	
+		gremlin = ModuleHandler.getModule("ExpurgationGremlin");
+	}
 
   	public override function onCountdownStart(event:CountdownScriptEvent):Void
 	{
 		if (!PlayState.instance.isInCutscene)
 		{
       		event.cancelEvent();
-			
+
       		playCutscene();
 		}
 	}
 
-  	function playCutscene(event)
+  function playCutscene(event)
 	{
 		var pre:Float = Conductor.instance.beatLengthMs * -10;
 		Conductor.instance.update(pre);
 
-      	PlayState.instance.currentStage.getDad().alpha = 0;
+    PlayState.instance.currentStage.getDad().alpha = 0;
 
 		PlayState.instance.isInCutscene = true;
 
@@ -124,13 +124,13 @@ class ExpurgationSong extends Song
 		spawnAnim.animation.play("start");
 
 		trickySpawnSound.play();
-		
+
 		spawnAnim.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int)
 		{
 			if (frameIndex == 24)
 				trickyGlitchSound.play();
 		};
-		
+
 		spawnAnim.animation.finishCallback = function(pog:String)
 		{
 			trickyGlitchSound.fadeOut();
@@ -138,7 +138,7 @@ class ExpurgationSong extends Song
 			PlayState.instance.remove(spawnAnim);
 			PlayState.instance.startCountdown();
 			PlayState.instance.isInCutscene = false;
-		
+
 			for (timer in timerResetter) {
 				timer.cancel();
 				timer = null;
@@ -160,10 +160,10 @@ class ExpurgationSong extends Song
 		}
 	}
 
-  	function onSongRetry(event:ScriptEvent)
+  function onSongRetry(event:ScriptEvent)
 	{
-      	PlayState.instance.currentStage.getDad().alpha = 0;
-			
+    PlayState.instance.currentStage.getDad().alpha = 0;
+
 		gremlin.forcedDisappear();
 		var signMeh = ModuleHandler.getModule("ExpurgationSign");
 		signMeh.leaveTheScreen();
@@ -171,31 +171,21 @@ class ExpurgationSong extends Song
 		super.onSongRetry(event);
 	}
 
-	// I JUST REALIZED I COMPLETELY FORGOT TO IMPLEMENT THIS BEFORE LOL
-	// public static var totalDamageTaken:float = 0;
-
 	function onNoteHit(event:HitNoteScriptEvent)
 	{
-    	super.onNoteHit(event);
+    super.onNoteHit(event);
 
-    	if (event.judgement == "bad" || event.judgement == "shit")
+    if (event.judgement == "bad" || event.judgement == "shit")
 		{
-			switch (event.judgement)
-			{
-				case "bad":
-					gremlin.addToTotalDamage(0.06);
-				case "shit":
-					// idk why shit rating adds more than miss. anyways its what kade did not me
-					gremlin.addToTotalDamage(0.2);
-			}
-		
+			// Cute and clean - PurSnake
+			gremlin.addToTotalDamage((event.judgement == "bad") ? 0.06 : 0.2);
 			gremlin.disappear();
 		}
 	}
 
 	function onNoteMiss(event:NoteScriptEvent)
 	{
-    	super.onNoteMiss(event);
+    super.onNoteMiss(event);
 
 		if (event.note.noteData.kind != "trickydeath")
 		{

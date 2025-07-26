@@ -2,6 +2,8 @@ import funkin.modding.module.ScriptedModule;
 import funkin.play.event.SongEvent;
 import funkin.play.PlayState;
 
+import funkin.modding.module.ModuleHandler;
+
 class ExpurgationSignEvent extends SongEvent
 {
 	public function new()
@@ -14,7 +16,7 @@ class ExpurgationSignEvent extends SongEvent
 		if (PlayState.instance == null || PlayState.instance.currentStage == null)
 			return;
 
-		var stopSign:ScriptedModule = ScriptedModule.init("ExpurgationSign");
+		var stopSign:ScriptedModule = ModuleHandler.getModule("ExpurgationSign");
 		stopSign.scriptCall("appear", [data.value.type, data.value.flipX]);
 
     	PlayState.instance.currentStage.refresh();
