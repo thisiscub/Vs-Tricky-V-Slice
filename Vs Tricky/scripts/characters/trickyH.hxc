@@ -14,20 +14,7 @@ class TrickyHellclownCharacter extends MultiSparrowCharacter
 	{
 		super("trickyH");
 	}
-
-	function onCreate(event:ScriptEvent)
-	{
-		FunkinMemory.cacheTexture(Paths.image("characters/Tricky/Left", "shared"));
-		FunkinMemory.cacheTexture(Paths.image("characters/Tricky/Down", "shared"));
-		FunkinMemory.cacheTexture(Paths.image("characters/Tricky/Up", "shared"));
-		FunkinMemory.cacheTexture(Paths.image("characters/Tricky/Right", "shared"));
-
-		super.onCreate(event);
-
-		GameOverSubState.musicSuffix = "Trickster";
-		GameOverSubState.blueBallSuffix = "-sign";
-	}
-
+	
 	function onUpdate(event:ScriptEvent)
 	{
 		super.onUpdate(event);

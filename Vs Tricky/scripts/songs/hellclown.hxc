@@ -1,4 +1,5 @@
 import funkin.play.song.Song;
+
 import funkin.play.PlayState;
 import funkin.Paths;
 import funkin.play.cutscene.VideoCutscene;
@@ -8,79 +9,108 @@ import funkin.play.PlayStatePlaylist;
 import funkin.modding.PolymodHandler;
 import funkin.util.FileUtil;
 import funkin.play.cutscene.CutsceneType;
+
 import funkin.FunkinMemory;
 
-class HellClownSong extends Song {
+class HellClownSong extends Song 
+{
   	var hasPlayedCutscene:Bool;
-  	var hasPlayedSecondCutscene:Bool;
 
-  	public function new(){
+  	public function new() 
+	{
     	super('hellclown');
-    
-    	hasPlayedCutscene = false;
-    	hasPlayedSecondCutscene = false;
-  	}
-  
-  	public override function onCountdownStart(event:CountdownScriptEvent):Void {
-		super.onCountdownStart(event);
-	  
-		if (!PlayStatePlaylist.isStoryMode)
-    		hasPlayedCutscene = true;
-      
-    	if(!hasPlayedCutscene) { 
-    		hasPlayedCutscene = true;
-      
-      		event.cancel();
-			PlayState.instance.camHUD.visible = false;
-			PlayState.instance.isInCutscene = true;
-			VideoCutscene.play(Paths.videos("HELLCLOWN_ENGADGED"));
-		}
   	}
 
-  	function onSongRetry(event:ScriptEvent) {
+	function onCreate(event:ScriptEvent) 
+	{
+		super.onCreate(event);
+
+		////////////////////////////
+		//FunkinMemory CANT HANDLE 
+		var cccc:FunkinSprite = FunkinSprite.createSparrow(0, 0, "characters/Tricky/Right");
+		cccc.animation.addByPrefix("right", "Sing Right", 24, false);
+		cccc.animation.play("right");
+		cccc.cameras = [PlayState.instance.camHUD];
+    	cccc.zIndex = 1500;
+		cccc.alpha = 0.000001;
+		PlayState.instance.add(cccc);
+
+		var cccc2:FunkinSprite = FunkinSprite.createSparrow(0, 0, "characters/Tricky/Up");
+		cccc2.animation.addByIndices("up", "Sing Up", [0, 1], "", 24, false);
+		cccc2.animation.play("up");
+		cccc2.cameras = [PlayState.instance.camHUD];
+    	cccc2.zIndex = 1500;
+		cccc2.alpha = 0.000001;
+		PlayState.instance.add(cccc2);
+
+		var cccc3:FunkinSprite = FunkinSprite.createSparrow(0, 0, "characters/Tricky/Down");
+		cccc3.animation.addByPrefix("down", "Sing Down", 24, false);
+		cccc3.animation.play("down");
+		cccc3.cameras = [PlayState.instance.camHUD];
+    	cccc3.zIndex = 1500;
+		cccc3.alpha = 0.000001;
+		PlayState.instance.add(cccc3);
+
+		var cccc4:FunkinSprite = FunkinSprite.createSparrow(0, 0, "characters/Tricky/Left");
+		cccc4.animation.addByPrefix("left", "Sing Left", 24, false);
+		cccc4.animation.play("left");
+		cccc4.cameras = [PlayState.instance.camHUD];
+    	cccc4.zIndex = 1500;
+		cccc4.alpha = 0.000001;
+		PlayState.instance.add(cccc4);
+
+		var cccc5:FunkinSprite = FunkinSprite.createSparrow(0, 0, "notes/NOTE_fire");
+		cccc5.animation.addByPrefix("fire", "purple fire", 24, false);
+		cccc5.animation.play("fire");
+		cccc5.cameras = [PlayState.instance.camHUD];
+    	cccc5.zIndex = 1500;
+		cccc5.alpha = 0.000001;
+		PlayState.instance.add(cccc5);
+
+		var cccc6:FunkinSprite = FunkinSprite.createSparrow(0, 0, "notes/SmokeSplash");
+		cccc6.animation.addByPrefix("smoke", "smoke", 24, false);
+		cccc6.animation.play("smoke");
+		cccc6.cameras = [PlayState.instance.camHUD];
+    	cccc6.zIndex = 1500;
+		cccc6.alpha = 0.000001;
+		PlayState.instance.add(cccc6);
+		//////////////////////////////
+
+		FunkinMemory.cacheSound(Paths.sound("burnSound", "shared"));
+
+		hasPlayedCutscene = false;
+	}	
+  
+  	public override function onCountdownStart(event:CountdownScriptEvent):Void 
+	{
+		super.onCountdownStart(event);
+      
+    	if(hasPlayedCutscene || !PlayStatePlaylist.isStoryMode) return; 
+
+    	hasPlayedCutscene = true;
+      
+      	event.cancel();
+
+		PlayState.instance.camHUD.visible = false;
+		PlayState.instance.isInCutscene = true;
+		VideoCutscene.play(Paths.videos("HELLCLOWN_ENGADGED"));
+  	}
+
+  	function onSongRetry(event:ScriptEvent) 
+	{
     	super.onSongRetry(event);
 
     	hasPlayedCutscene = true;
   	}
 
-  	function onCreate(event:ScriptEvent):Void {
-		FunkinMemory.cacheTexture(Paths.image('notes/NOTE_fire'));
-		FunkinMemory.cacheTexture(Paths.image('notes/SmokeSplash'));
-
-		FunkinMemory.cacheTexture(Paths.sound("notes/NOTE_fire", "shared")); //AGAIN MOTHERFUCKER
-		FunkinMemory.cacheTexture(Paths.sound("notes/SmokeSplash", "shared"));
-
-		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Idle", "shared"));
-		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Left", "shared"));
-		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Down", "shared"));
-		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Up", "shared"));
-		FunkinMemory.cacheTexture(Paths.sound("characters/Tricky/Right", "shared"));
-
-    	super.onCreate(event);
-
-    	hasPlayedCutscene = false;
-  	}
-
-  	public override function onSongEnd(event:CountdownScriptEvent):Void {
-		super.onSongEnd(event);
-		
-		if (!PlayStatePlaylist.isStoryMode)
-     		hasPlayedSecondCutscene = true;
-      
-    	if (!hasPlayedSecondCutscene) {
-			var bgSprite = new FunkinSprite(-100, -100);
-			bgSprite.makeSolidColor(2000, 2500, 0xFF000000);
-			bgSprite.cameras = [PlayState.instance.camHUD]; // Show over the HUD.
-			bgSprite.zIndex = 1000000;
-			PlayState.instance.add(bgSprite);
-			PlayState.instance.refresh();
-
-    		event.cancel();
+  	public override function onSongEnd(event:CountdownScriptEvent):Void
+	{
+		if (!PlayState.instance.isInCutscene || !PlayStatePlaylist.isStoryMode) {
 			VideoCutscene.play(Paths.videos("TricksterMan"), CutsceneType.ENDING);
 
-    		hasPlayedSecondCutscene = true;
-    	} else {
-			hasPlayedSecondCutscene = false;
+			PlayState.instance.isInCutscene = true;
 		}
+
+		super.onSongEnd(event);
 	}
 }

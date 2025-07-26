@@ -7,24 +7,28 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import funkin.FunkinMemory;
 
-class ExpurgationSign extends Module {
+class ExpurgationSign extends Module
+{
 	static var signsArray:Array<FunkinSprite> = [];
 
-	public function new() {
+	public function new()
+	{
 		super("ExpurgationSign");
 		FunkinMemory.permanentCacheTexture(Paths.sound("mechanics/Sign_Post_Mechanic", "shared"));
 		FunkinMemory.permanentCacheTexture(Paths.sound("mechanics/HP GREMLIN", "shared"));
 		FunkinMemory.permanentCacheTexture(Paths.sound("notes/NOTE_death", "shared"));
 	}
 
-	public function appear(signType:Int = 0, flipX:Bool = false):Void {
+	public function appear(signType:Int = 0, flipX:Bool = false):Void
+	{
 		var sign:FunkinSprite = FunkinSprite.createSparrow(0, 0, "mechanics/Sign_Post_Mechanic");
 		sign.setGraphicSize(Std.int(sign.width * 0.67));
 
 		var playerNotesX = PlayState.instance.playerStrumline.x + PlayState.instance.playerStrumline.getXPos(3);
 		var signX = playerNotesX - 400;
 
-		switch (signType) {
+		switch (signType)
+		{
 			case 0:
 				sign.animation.addByPrefix("sign", "Signature Stop Sign 1", 24, false);
 
@@ -61,13 +65,16 @@ class ExpurgationSign extends Module {
 		PlayState.instance.add(sign);
 		PlayState.instance.refresh();
 
-		sign.animation.finishCallback = function(pog:String) {
+		sign.animation.finishCallback = function(pog:String)
+		{
 			PlayState.instance.remove(sign);
 		}
 	}
 
-	function leaveTheScreen() {
-		for (sign in signsArray) {
+	function leaveTheScreen()
+	{
+		for (sign in signsArray)
+		{
 			FlxTween.tween(sign, { y: 1000 }, 0.5, { ease: FlxEase.expoOut, onComplete: _ -> PlayState.instance.remove(sign)});
 		}
 	}

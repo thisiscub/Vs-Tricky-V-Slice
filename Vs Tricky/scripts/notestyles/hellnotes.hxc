@@ -1,7 +1,5 @@
 import funkin.play.notes.notestyle.NoteStyle;
 
-//import funkin.play.notes.NoteDirection;
-import funkin.Preferences;
 import funkin.play.PlayState;
 
 class HellNoteStyle extends NoteStyle

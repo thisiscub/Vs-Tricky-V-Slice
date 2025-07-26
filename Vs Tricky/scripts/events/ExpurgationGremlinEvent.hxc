@@ -2,12 +2,15 @@ import funkin.modding.module.ScriptedModule;
 import funkin.play.event.SongEvent;
 import funkin.play.PlayState;
 
-class ExpurgationGremlinEvent extends SongEvent {
-	public function new() {
+class ExpurgationGremlinEvent extends SongEvent
+{
+	public function new()
+	{
 		super("ExpurgationGremlin");
 	}
 
-	public override function handleEvent(data:SongEventData) {
+	public override function handleEvent(data:SongEventData)
+	{
 		if (PlayState.instance == null || PlayState.instance.currentStage == null)
 			return;
 
@@ -17,7 +20,8 @@ class ExpurgationGremlinEvent extends SongEvent {
 		PlayState.instance.currentStage.refresh();
 	}
 
-	public function getEventSchema() {
+	public function getEventSchema()
+	{
 		return [
 			{
 				name: "hpToTake",
@@ -42,7 +46,8 @@ class ExpurgationGremlinEvent extends SongEvent {
 		];
 	}
 
-	public function getTitle() {
+	public function getTitle()
+	{
 		return "Expurgation Gremlin";
 	}
 }

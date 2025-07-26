@@ -12,16 +12,12 @@ class TrickyExpurgationCharacter extends MultiSparrowCharacter
 		super("exTricky");
 	}
 
-	function onAdd(e) {
-
-		FunkinMemory.permanentCacheTexture(Paths.sound("mechanics/Sign_Post_Mechanic", "shared"));
-		FunkinMemory.permanentCacheTexture(Paths.sound("mechanics/HP GREMLIN", "shared"));
-		FunkinMemory.permanentCacheTexture(Paths.sound("notes/NOTE_death", "shared"));
-
+	function onAdd(e)
+	{
 		super.onAdd(e);
 
 		exSpikes = FunkinSprite.createSparrow(550, 470, 'bgs/expurgation/FloorSpikes');
-		exSpikes.visible = false;
+		exSpikes.alpha = 0.0001;
 		exSpikes.zIndex = 400;
 		exSpikes.animation.addByPrefix('spike','Floor Spikes', 24, false);
 
@@ -29,22 +25,25 @@ class TrickyExpurgationCharacter extends MultiSparrowCharacter
 		PlayState.instance.currentStage.refresh();
 	}
 
-	function onUpdate(event:ScriptEvent) {
+	function onUpdate(event:ScriptEvent)
+	{
 		super.onUpdate(event);
 
-		if (this.animation != null && exSpikes != null) {
+		if (this.animation != null && exSpikes != null)
+		{
 			if (exSpikes.animation.frameIndex >= 3 && this.animation.curAnim.name == 'singUP')
 				exSpikes.animation.pause();
 		}
 	}
 
-	function playAnimation(name:String, restart:Bool = false, ignoreOther:Bool = false, reverse:Bool = false) {
+	function playAnimation(name:String, restart:Bool = false, ignoreOther:Bool = false, reverse:Bool = false)
+	{
 		super.playAnimation(name, restart, ignoreOther, reverse);
 		
 		if (exSpikes != null) {
 			if (this.animation.curAnim.name == 'singUP' && exSpikes.animation.finished)
 			{
-				exSpikes.visible = true;
+				exSpikes.alpha = 1;
 				if (exSpikes.animation.finished)
 					exSpikes.animation.play('spike');
 			}
@@ -52,8 +51,9 @@ class TrickyExpurgationCharacter extends MultiSparrowCharacter
 			if (!exSpikes.animation.finished)
 			{
 				exSpikes.animation.resume();
-				exSpikes.animation.finishCallback = function(pog:String) {
-					exSpikes.visible = false;
+				exSpikes.animation.finishCallback = function(pog:String)
+				{
+					exSpikes.alpha = 0.0001;
 					exSpikes.animation.finishCallback = null;
 				}
 			}

@@ -8,21 +8,24 @@ import flixel.text.FlxText;
 import funkin.audio.FunkinSound;
 import funkin.Conductor;
 
-class AuditorHellStage extends Stage {
-	function new() {
+class AuditorHellStage extends Stage
+{
+	function new()
+	{
 		super('auditorHell');
 	}
 
 	var cloneOne:FlxSprite;
 	var cloneTwo:FlxSprite;
 	
-	function buildStage() {
+	function buildStage()
+	{
 		super.buildStage();
 		
 		cloneOne = FunkinSprite.createSparrow(0, 0, 'bgs/expurgation/Clone');
 		cloneTwo = FunkinSprite.createSparrow(0, 0, 'bgs/expurgation/Clone');
-		cloneOne.alpha = 0;
-		cloneTwo.alpha = 0;
+		cloneOne.alpha = 0.0001;
+		cloneTwo.alpha = 0.0001;
 		cloneOne.zIndex = 201;
 		cloneTwo.zIndex = 201;
 		cloneOne.animation.addByPrefix('clone', 'Clone', 24, false);
@@ -35,7 +38,8 @@ class AuditorHellStage extends Stage {
 
 	var beatOfFuck:Int = 0;
 
-	function onUpdate(event:ScriptEvent) {
+	function onUpdate(event:ScriptEvent)
+	{
 		super.onUpdate(event);
 
 		if (Conductor.instance.currentBeat % 8 == 4 && beatOfFuck != Conductor.instance.currentBeat)
@@ -47,7 +51,8 @@ class AuditorHellStage extends Stage {
 
 	function doClone(side:Int)
 	{
-		switch(side) {
+		switch(side)
+		{
 			case 0:
 				if (cloneOne.alpha == 1)
 					return;
@@ -57,7 +62,7 @@ class AuditorHellStage extends Stage {
 				cloneOne.alpha = 1;
 
 				cloneOne.animation.play('clone');
-				cloneOne.animation.finishCallback = (pog:String) -> cloneOne.alpha = 0;
+				cloneOne.animation.finishCallback = (pog:String) -> cloneOne.alpha = 0.0001;
 			case 1:
 				if (cloneTwo.alpha == 1)
 					return;
@@ -67,7 +72,7 @@ class AuditorHellStage extends Stage {
 				cloneTwo.alpha = 1;
 
 				cloneTwo.animation.play('clone');
-				cloneTwo.animation.finishCallback = (pog:String) -> cloneTwo.alpha = 0;
+				cloneTwo.animation.finishCallback = (pog:String) -> cloneTwo.alpha = 0.0001;
 		}
 	}
 
