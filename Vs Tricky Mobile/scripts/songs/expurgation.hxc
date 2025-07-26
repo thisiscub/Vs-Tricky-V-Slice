@@ -158,7 +158,7 @@ class ExpurgationSong extends Song
 	{
       	PlayState.instance.currentStage.getDad().alpha = 0;
 
-		gremlin.manualDisappear();
+		gremlin.forcedDisappear();
 		var signMeh = ModuleHandler.getModule("ExpurgationSign");
 		signMeh.leaveTheScreen();
 
@@ -173,7 +173,7 @@ class ExpurgationSong extends Song
     	super.onNoteHit(event);
 
     	if (event.judgement == "bad" || event.judgement == "shit")
-			gremlin.mustStop = true;
+			gremlin.disappear();
 	}
 
 	function onNoteMiss(event:NoteScriptEvent)
@@ -183,7 +183,7 @@ class ExpurgationSong extends Song
 		if (event.note.noteData.kind != "trickydeath")
 		{
 			PlayState.instance.health -= 0.125;
-			gremlin.mustStop = true;
+			gremlin.disappear();
 		}
 	}
 }

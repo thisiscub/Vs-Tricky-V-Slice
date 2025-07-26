@@ -22,12 +22,12 @@ class ExpurgationGremlin extends Module
 	var tween1:FlxTween = null;
 	var tween2:FlxTween = null;
 
-	public function new()
+	function new()
 	{
 		super("ExpurgationGremlin");
 	}
 
-	public function appear(hpToTake:Int, duration:Int, persistbool:Bool):Void
+	function appear(hpToTake:Int, duration:Int, persistbool:Bool):Void
 	{
 		persist = persistbool;
 		
@@ -122,8 +122,14 @@ class ExpurgationGremlin extends Module
 			});
 		});
 	}
+	
+	function disappear():Void
+	{
+		if (currentGremlin != null)
+			mustStop = true;
+	}
 
-	public function manualDisappear():Void
+	function forcedDisappear():Void
 	{
 		if (currentGremlin != null) {
 			mustStop = true;
