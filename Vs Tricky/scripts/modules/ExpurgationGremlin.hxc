@@ -38,7 +38,7 @@ class ExpurgationGremlin extends Module
 
 		for (damage in totalDamageTaken) {
 			damage = null;
-			destroy(damage);
+			//destroy(damage);
 		}
 
 		var damageTaken:Float = 0.0;
