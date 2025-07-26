@@ -15,6 +15,7 @@ import funkin.FunkinMemory;
 class ExpurgationGremlin extends Module
 {
 	static var mustStop:Bool = false;
+	static var persist:Bool = false;
 
 	static var currentGremlin = null;
 
@@ -26,8 +27,10 @@ class ExpurgationGremlin extends Module
 		super("ExpurgationGremlin");
 	}
 
-	public function appear(hpToTake:Int, duration:Int, persist:Bool):Void
+	public function appear(hpToTake:Int, duration:Int, persistbool:Bool):Void
 	{
+		persist = persistbool;
+		
 		if (PlayState.instance.health < 1.5 && !persist)
 			return;
 		
@@ -122,7 +125,9 @@ class ExpurgationGremlin extends Module
 
 	public function manualDisappear():Void
 	{
-		if (currentGremlin != null)
+		if (currentGremlin != null) {
 			mustStop = true;
+			persist = false;
+		}
 	}
 }

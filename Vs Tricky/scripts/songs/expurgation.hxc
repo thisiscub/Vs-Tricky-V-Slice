@@ -173,7 +173,7 @@ class ExpurgationSong extends Song
     	super.onNoteHit(event);
 
     	if (event.judgement == "bad" || event.judgement == "shit")
-			gremlin.manualDisappear();
+			gremlin.mustStop = true;
 	}
 
 	function onNoteMiss(event:NoteScriptEvent)
@@ -183,7 +183,7 @@ class ExpurgationSong extends Song
 		if (event.note.noteData.kind != "trickydeath")
 		{
 			PlayState.instance.health -= 0.125;
-			gremlin.manualDisappear();
+			gremlin.mustStop = true;
 		}
 	}
 }
