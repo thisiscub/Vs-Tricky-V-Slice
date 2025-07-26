@@ -105,7 +105,8 @@ class HellClownSong extends Song
 
   	public override function onSongEnd(event:CountdownScriptEvent):Void
 	{
-		if (!PlayState.instance.isInCutscene || !PlayStatePlaylist.isStoryMode) {
+		if(!PlayState.instance.isInCutscene && PlayStatePlaylist.isStoryMode)
+		{
 			VideoCutscene.play(Paths.videos("TricksterMan"), CutsceneType.ENDING);
 
 			PlayState.instance.isInCutscene = true;

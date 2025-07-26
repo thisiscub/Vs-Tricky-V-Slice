@@ -273,7 +273,7 @@ class MadnessSong extends Song
 
 	function onSongEnd(event:CountdownScriptEvent)
 	{
-    	if(!PlayState.instance.isInCutscene && !PlayStatePlaylist.isStoryMode)
+    	if(!PlayState.instance.isInCutscene && PlayStatePlaylist.isStoryMode)
 		{
       		event.cancel();
 			playCutscene();
