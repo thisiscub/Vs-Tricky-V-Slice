@@ -17,7 +17,7 @@ class ExpurgationSignEvent extends SongEvent
 			return;
 
 		var stopSign:ScriptedModule = ModuleHandler.getModule("ExpurgationSign");
-		stopSign.scriptCall("appear", [data.value.type, data.value.flipX]);
+		stopSign.appear(data.value.type, data.value.flipX);
 
     	PlayState.instance.currentStage.refresh();
 	}

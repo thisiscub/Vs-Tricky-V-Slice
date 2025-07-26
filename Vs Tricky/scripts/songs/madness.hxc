@@ -23,13 +23,13 @@ class MadnessSong extends Song
   	public function new() {
     	super('madness');
   	}
-  	
-	function onCreate(event:ScriptEvent) 
+
+	function onCreate(event:ScriptEvent)
 	{
 		super.onCreate(event);
 
 		////////////////////////////
-		//FunkinMemory CANT HANDLE 
+		//FunkinMemory CANT HANDLE
 		var cccc:FunkinSprite = FunkinSprite.createSparrow(0, 0, "notes/NOTE_fire");
 		cccc.animation.addByPrefix("fire", "purple fire", 24, false);
 		cccc.animation.play("fire");
@@ -46,7 +46,7 @@ class MadnessSong extends Song
 		cccc2.alpha = 0.000001;
 		PlayState.instance.add(cccc2);
 		//////////////////////////////
- 
+
 		FunkinMemory.cacheSound(Paths.sound("burnSound", "shared"));
 		FunkinMemory.cacheSound(Paths.sound("honkers", "shared"));
 		FunkinMemory.cacheSound(Paths.sound("energy shot", "shared"));
@@ -56,14 +56,14 @@ class MadnessSong extends Song
 		hasPlayedCutscene = false;
 	}
 
-  	public override function onCountdownStart(event:CountdownScriptEvent):Void 
+  	public override function onCountdownStart(event:CountdownScriptEvent):Void
 	{
 		super.onCountdownStart(event);
-	  
+
     	if(hasPlayedCutscene || !PlayStatePlaylist.isStoryMode) return;
-		
+
     	hasPlayedCutscene = true;
-      
+
       	event.cancel();
 
 		PlayState.instance.camHUD.visible = false;
@@ -71,12 +71,12 @@ class MadnessSong extends Song
 		PlayState.instance.isInCutscene = true;
 
         VideoCutscene.play(Paths.videos("HankFuckingShootsTricky"));
-		
+
 		// why are these not written in the video cutscene
 		PlayState.instance.isInCutscene = false;
   	}
 
-  	function onSongRetry(event:ScriptEvent) 
+  	function onSongRetry(event:ScriptEvent)
 	{
     	super.onSongRetry(event);
 
@@ -129,22 +129,22 @@ class MadnessSong extends Song
 
 		var textStuff = ModuleHandler.getModule("tricky.StaticTexthandler");
 
-		new FlxTimer().start(0.01, function(tmr:FlxTimer) 
+		new FlxTimer().start(0.01, function(tmr:FlxTimer)
 		{
 			if (fade.alpha != 1 && !varNumbaTwo) {
 				state.camHUD.alpha -= 0.1;
 				fade.alpha += 0.1;
-				if (fade.alpha == 1) 
+				if (fade.alpha == 1)
 				{
 					varNumbaTwo = true;
 
 					animation.alpha = 1;
-					
+
       				state.currentStage.getDad().alpha = 0.000001;
 				}
 				tmr.reset(0.1);
-			} 
-			else 
+			}
+			else
 			{
 				fade.alpha -= 0.1;
 				if (fade.alpha <= 0.5)
@@ -155,13 +155,13 @@ class MadnessSong extends Song
 
 		var roarPlayed:Bool = false;
 
-		new FlxTimer().start(0.01, function(tmr:FlxTimer) 
+		new FlxTimer().start(0.01, function(tmr:FlxTimer)
 		{
 			if (!fadeDone)
 				tmr.reset(0.1)
-			else 
+			else
 			{
-				if (animation.animation == null || animation.animation.name == null) 
+				if (animation.animation == null || animation.animation.name == null)
 				{
 					animation.animation.play("cut1");
 					textStuff.createSpookyText(["YOU DO NOT KILL CLOWN"], 1100, FlxG.height * 0.9 + 400);
@@ -184,25 +184,25 @@ class MadnessSong extends Song
 				{
 					tmr.reset(0.1);
 
-					switch(animation.animation.frameIndex) 
+					switch(animation.animation.frameIndex)
 					{
 						case 104:
 							if (animation.animation.name == 'cut1')
 								textStuff.resetSpookyTextManual();
 					}
 
-					if (animation.animation.name == 'pillar') 
+					if (animation.animation.name == 'pillar')
 					{
 						if (animation.animation.frameIndex >= 85)
 							startFading = true;
 						FlxG.camera.shake(0.05);
 					}
-				} 
-				else 
+				}
+				else
 				{
 					textStuff.resetSpookyTextManual();
-								
-					switch(animation.animation.name) 
+
+					switch(animation.animation.name)
 					{
 						case 'cut1':
 							animation.animation.play('cut2');
@@ -240,28 +240,28 @@ class MadnessSong extends Song
 					tmr.reset(0.1);
 				}
 
-				if (startFading) 
+				if (startFading)
 				{
 					sounders.fadeOut();
-					
-					if (black.alpha != 1) 
+
+					if (black.alpha != 1)
 					{
 						tmr.reset(0.1);
 						black.alpha += 0.02;
 
-						if (black.alpha >= 0.7 && !roarPlayed) 
+						if (black.alpha >= 0.7 && !roarPlayed)
 						{
 							roar.play();
 							roarPlayed = true;
 						}
-					} 
-					else if (done) 
+					}
+					else if (done)
 					{
 						state.endSong();
 						state.isInCutscene = false;
 						FlxG.camera.stopFX();
-					} 
-					else 
+					}
+					else
 					{
 						done = true;
 						tmr.reset(5);
@@ -271,14 +271,14 @@ class MadnessSong extends Song
 		});
 	}
 
-	function onSongEnd(event:CountdownScriptEvent) 
+	function onSongEnd(event:CountdownScriptEvent)
 	{
-    	if(!PlayState.instance.isInCutscene && !PlayStatePlaylist.isStoryMode) {
+    	if(!PlayState.instance.isInCutscene && !PlayStatePlaylist.isStoryMode)
+		{
       		event.cancel();
-
 			playCutscene();
 		}
-		
+
 		super.onSongEnd(event);
 	}
 }
