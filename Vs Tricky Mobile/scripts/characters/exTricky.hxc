@@ -31,8 +31,11 @@ class TrickyExpurgationCharacter extends MultiSparrowCharacter
 
 		if (this.animation != null && exSpikes != null)
 		{
-			if (exSpikes.animation.frameIndex >= 3 && this.animation.curAnim.name == 'singUP')
-				exSpikes.animation.pause();
+			if (exSpikes.animation.frameIndex >= 3)
+			{
+				if (this.animation.curAnim.name == 'singUP' || this.animation.curAnim.name == 'singUP-hold')
+					exSpikes.animation.pause();
+			}
 		}
 	}
 
@@ -41,11 +44,14 @@ class TrickyExpurgationCharacter extends MultiSparrowCharacter
 		super.playAnimation(name, restart, ignoreOther, reverse);
 		
 		if (exSpikes != null) {
-			if (this.animation.curAnim.name == 'singUP' && exSpikes.animation.finished)
+			if (exSpikes.animation.finished)
 			{
-				exSpikes.alpha = 1;
-				if (exSpikes.animation.finished)
-					exSpikes.animation.play('spike');
+				if (this.animation.curAnim.name == 'singUP' || this.animation.curAnim.name == 'singUP-hold')
+				{
+					exSpikes.alpha = 1;
+					if (exSpikes.animation.finished)
+						exSpikes.animation.play('spike');
+				}
 			}
 			
 			if (!exSpikes.animation.finished)
