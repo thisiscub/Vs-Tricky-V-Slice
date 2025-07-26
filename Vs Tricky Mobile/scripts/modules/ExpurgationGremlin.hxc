@@ -12,19 +12,22 @@ import funkin.modding.module.Module;
 
 import funkin.FunkinMemory;
 
-class ExpurgationGremlin extends Module {
-	var mustStop:Bool = false;
+class ExpurgationGremlin extends Module
+{
+	static var mustStop:Bool = false;
 
-	var currentGremlin;
+	static var currentGremlin = null;
 
 	var tween1:FlxTween = null;
 	var tween2:FlxTween = null;
 
-	public function new() {
+	public function new()
+	{
 		super("ExpurgationGremlin");
 	}
 
-	public function appear(hpToTake:Int, duration:Int, persist:Bool):Void {
+	public function appear(hpToTake:Int, duration:Int, persist:Bool):Void
+	{
 		if (PlayState.instance.health < 1.5 && !persist)
 			return;
 		
@@ -83,6 +86,7 @@ class ExpurgationGremlin extends Module {
 						{
 							onUpdate: function(tween2:FlxTween)
 							{
+								// now as i made mustStop static i think persist works even when using an event. yippee!
 								if (mustStop && !persist)
 								{
 									tween2 = null;
@@ -116,7 +120,8 @@ class ExpurgationGremlin extends Module {
 		});
 	}
 
-	public function manualDisappear():Void {
+	public function manualDisappear():Void
+	{
 		if (currentGremlin != null)
 			mustStop = true;
 	}

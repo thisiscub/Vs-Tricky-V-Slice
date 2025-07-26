@@ -1,7 +1,9 @@
 import funkin.ui.story.Level;
 
-class ExLevel extends Level {
-	function new() {
+class ExLevel extends Level
+{
+	function new()
+	{
 		super("expurgation");
 	}
 

@@ -28,9 +28,6 @@ class StoryConfirmJaws extends Module
 		super.onUpdate(event);
 		if (ReflectUtil.getClassNameOf(FlxG.state) == "funkin.ui.story.StoryMenuState")
 		{
-			//if (FlxG.state.selectedLevel)
-			//	FlxG.camera.angle += event.elapsed * 100;
-
 			if (!jawsAdded && !jawAhg)
 			{
 				jawSpr = new FunkinSprite(-300,-760);
@@ -42,7 +39,7 @@ class StoryConfirmJaws extends Module
 				FlxG.state.add(jawSpr);
 				jawSpr.animation.play("y");
 				jawSpr.scrollFactor.set();
-				jawSpr.alpha = 0;
+				jawSpr.alpha = 0.0001;
 				
 				jawsAdded = true;
 				FlxG.state.refresh();
@@ -66,11 +63,6 @@ class StoryConfirmJaws extends Module
 
 		if (ReflectUtil.getClassNameOf(FlxG.state) == "funkin.ui.story.StoryMenuState")
 			jawFrames = Paths.getSparrowAtlas("Jaws");
-
-		//if (weNeedPlayStateJaws && Std.isOfType(event.targetState, PlayState))
-		//	createJaws();
-
-		super.onStateChangeEnd(event);
 	}
 
 	function createJaws()
@@ -87,6 +79,5 @@ class StoryConfirmJaws extends Module
 		jawSpr.camera = state.camCutscene;
 		jawSpr.animation.play("y", false, false, 18);
 		jawSpr.scrollFactor.set();
-		//jawSpr.alpha = 0;
 	}
 }

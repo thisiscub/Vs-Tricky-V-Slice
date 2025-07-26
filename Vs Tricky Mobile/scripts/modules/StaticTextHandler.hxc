@@ -22,7 +22,6 @@ class StaticTexthandler extends Module
 	var trickySongsArray = ["improbable-outset", "madness", "hellclown", "expurgation"];
     var lineChances = [2, 20, 45, 60];
 
-    var missLineChance:Int = 0;
     //only in madness
 	var madnessTrickyLinesMiss:Array<String> = ["TERRIBLE", "WASTE", "MISS CALCULTED", "PREDICTED", "FAILURE", "DISGUSTING", "ABHORRENT", "FORESEEN", "CONTEMPTIBLE", "PROGNOSTICATE", "DISPICABLE", "REPREHENSIBLE"];
 
@@ -62,11 +61,6 @@ class StaticTexthandler extends Module
 			return;
 		}
 
-        if (PlayState.instance.currentChart.song.id == "madness")
-            missLineChance = 10;
-
-        trace(missLineChance);
-
 		staticSpr = new FlxSprite().loadGraphic(Paths.image('bgs/TrickyStatic'), true, 320, 180);
 		staticSpr.antialiasing = true;
 		staticSpr.animation.add('static', [0, 1, 2], 24, true);
@@ -98,7 +92,7 @@ class StaticTexthandler extends Module
 		if (PlayState.instance == null || !allowWorking)
 			return;
 
-		if (FlxG.random.bool(missLineChance) && !spookyRendered)
+		if (FlxG.random.bool(PlayState.instance.currentChart.song.id == "madness" ? 10 : 0) && !spookyRendered)
 			createSpookyText(madnessTrickyLinesMiss);
 	}
 
@@ -167,17 +161,14 @@ class StaticTexthandler extends Module
 		if (spookyText != null && PlayState.instance.members.indexOf(spookyText) != -1)
 			PlayState.instance.remove(spookyText);	
 
-		//PlayState.instance.currentStage.refresh();
 		spookyRendered = false;
 		staticSpr.alpha = 0;
     }
 
     function resetSpookyTextManual():Void
     {
-		spookySteps = Conductor.instance.currentStep;
-		spookyRendered = true;
-		staticSpr.alpha = 0.5;
-		FlxG.sound.play(Paths.sound('staticSound'));
+		staticSpr.alpha = 0;
+		spookyText.alpha = 0;
 		resetSpookyText = true;
 	}
 

@@ -15,18 +15,17 @@ import flixel.util.FlxTimer;
 import funkin.FunkinMemory;
 import funkin.modding.module.ModuleHandler;
 
-class ExpurgationSong extends Song {
+class ExpurgationSong extends Song
+{
 	var trickySpawnSound:FunkinSound;
   	var trickyGlitchSound:FunkinSound;
-  	var hasPlayedCutscene:Bool;
 	var gremlin:ScriptedModule;
 
-	var gremlinTimer = null;
+	static var gremlinTimer = null;
 
-  	public function new() {
+  	public function new()
+	{
     	super("expurgation");
-   
-    	hasPlayedCutscene = false;
   	}
 
 	function onResume(e)
@@ -45,7 +44,8 @@ class ExpurgationSong extends Song {
 		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer.active = false);
 	}
 
-	function onCreate(event:ScriptEvent) {
+	function onCreate(event:ScriptEvent)
+	{
 		super.onCreate(event);
 
 		////////////////////////////
@@ -74,6 +74,11 @@ class ExpurgationSong extends Song {
 		cccc3.alpha = 0.000001;
 		PlayState.instance.add(cccc3);
 		//////////////////////////////
+
+		FunkinMemory.cacheSound(Paths.sound("death", "shared"));
+
+		FunkinMemory.cacheSound(Paths.sound("expurgation/Trickyspawn", "shared"));
+		FunkinMemory.cacheSound(Paths.sound("expurgation/TrickyGlitch", "shared"));
 		
 		var playerNotesX = PlayState.instance.playerStrumline.x + PlayState.instance.playerStrumline.getXPos(3);
 
@@ -85,62 +90,32 @@ class ExpurgationSong extends Song {
 		PlayState.instance.refresh();
 
 		gremlin = ScriptedModule.init("ExpurgationGremlin");
-
-		FunkinMemory.cacheSound(Paths.sound("expurgation/Trickyspawn", "shared"));
-		FunkinMemory.cacheSound(Paths.sound("expurgation/TrickyGlitch", "shared"));
-		FunkinMemory.cacheSound(Paths.sound("sound_clown_roar", "shared"));
-		FunkinMemory.cacheSound(Paths.sound("firepillar", "shared"));
-
-    	hasPlayedCutscene = false;
 	}	
 
-  	public override function onCountdownStart(event:CountdownScriptEvent):Void {
-
-		//AGAIN AND AGAIN
-
-		trace("AAAAAA");
-
-		if (!hasPlayedCutscene) {
-			var pre:Float = Conductor.instance.beatLengthMs * -10;
-			Conductor.instance.update(pre);
-
-      		hasPlayedCutscene = true;
-      		PlayState.instance.currentStage.getDad().alpha = 0;
-
+  	public override function onCountdownStart(event:CountdownScriptEvent):Void
+	{
+		if (!PlayState.instance.isInCutscene)
+		{
       		event.cancelEvent();
 
       		playCutscene();
 		}
-			
-		// idk why but i think this doesnt work and im so fuicking mad aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-		if (gremlinTimer != null) {
-			gremlinTimer.cancel();
-			gremlinTimer = null;
-		}
-
-		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer.cancel());
-		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer = null);
-
-		if (!PlayState.instance.isInCutscene) {
-			gremlinTimer = new FlxTimer().start(25, function(tmr:FlxTimer) {
-				if (Conductor.instance.currentStep < 2400) {
-					if (PlayState.instance.health >= 1.5)
-						gremlin.appear(40, 3);
-					tmr.reset(25);
-				}
-			});
-		}
 	}
 
-  	function playCutscene() {
+  	function playCutscene(event)
+	{
+		var pre:Float = Conductor.instance.beatLengthMs * -10;
+		Conductor.instance.update(pre);
+
+      	PlayState.instance.currentStage.getDad().alpha = 0;
+
 		PlayState.instance.isInCutscene = true;
 
 		var camPosDAD:FlxBasePoint = PlayState.instance.currentStage.getDad().cameraFocusPoint;
 
 		trickySpawnSound = FunkinSound.load(Paths.sound("expurgation/Trickyspawn"));
 		trickyGlitchSound = FunkinSound.load(Paths.sound("expurgation/TrickyGlitch"));
-		PlayState.instance.tweenCameraToPosition(camPosDAD.x, camPosDAD.y, 0.6, FlxEase.sineInOut);
+		PlayState.instance.tweenCameraToPosition(camPosDAD.x, camPosDAD.y, 0.7, FlxEase.sineOut);
 
 		var spawnAnim = FunkinSprite.createSparrow(700, 240, "bgs/expurgation/EXENTER", "clown");
 		spawnAnim.animation.addByPrefix("start", "Entrance", 24, false);
@@ -150,54 +125,64 @@ class ExpurgationSong extends Song {
 
 		trickySpawnSound.play();
 		
-		spawnAnim.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int) {
-			if (frameIndex == 24) {
+		spawnAnim.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int)
+		{
+			if (frameIndex == 24)
 				trickyGlitchSound.play();
-			}
 		};
 		
-		spawnAnim.animation.finishCallback = function(pog:String) {
+		spawnAnim.animation.finishCallback = function(pog:String)
+		{
 			trickyGlitchSound.fadeOut();
 			PlayState.instance.currentStage.getDad().alpha = 1;
 			PlayState.instance.remove(spawnAnim);
-			PlayState.instance.isInCutscene = false;
 			PlayState.instance.startCountdown();
+			PlayState.instance.isInCutscene = false;
+
+			// honestly, i genuinelly have no idea why i have to set timer to null. i guess it can't override it? lol
+			gremlinTimer = null;
+
+			gremlinTimer = new FlxTimer().start(25, function(tmr:FlxTimer)
+			{
+				if (Conductor.instance.currentStep < 2400)
+				{
+					if (PlayState.instance.health >= 1.5)
+						gremlin.appear(40, 3);
+					tmr.reset(25);
+				}
+			});
 		}
 	}
 
-  	function onSongRetry(event:ScriptEvent) {
+  	function onSongRetry(event:ScriptEvent)
+	{
       	PlayState.instance.currentStage.getDad().alpha = 0;
-    	hasPlayedCutscene = false;
 
 		gremlin.manualDisappear();
 		var signMeh = ModuleHandler.getModule("ExpurgationSign");
 		signMeh.leaveTheScreen();
 
-		if (gremlinTimer != null) {
-			gremlinTimer.cancel();
-			gremlinTimer = null;
-		}
-		
-		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer.cancel());
-		FlxTimer.globalManager.forEach((timer:FlxTimer) -> timer = null);
-
 		super.onSongRetry(event);
 	}
 
-	public static var totalDamageTaken:float = 0;
+	// I JUST REALIZED I COMPLETELY FORGOT TO IMPLEMENT THIS BEFORE LOL
+	// public static var totalDamageTaken:float = 0;
 
-	function onNoteHit(event:HitNoteScriptEvent) {
+	function onNoteHit(event:HitNoteScriptEvent)
+	{
     	super.onNoteHit(event);
 
     	if (event.judgement == "bad" || event.judgement == "shit")
 			gremlin.manualDisappear();
 	}
 
-	function onNoteMiss(event:NoteScriptEvent) {
+	function onNoteMiss(event:NoteScriptEvent)
+	{
     	super.onNoteMiss(event);
 
-		if (event.note.noteData.kind != "trickydeath") {
-			totalDamageTaken += 0.075;
+		if (event.note.noteData.kind != "trickydeath")
+		{
+			PlayState.instance.health -= 0.125;
 			gremlin.manualDisappear();
 		}
 	}
