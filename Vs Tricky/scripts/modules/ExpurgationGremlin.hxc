@@ -18,7 +18,7 @@ class ExpurgationGremlin extends Module
 	static var persist:Bool = false;
 
 	static var currentGremlin:FunkinSprite = null;
-	
+
 	var totalDamageTaken:Array<Float> = [ ];
 
 	var tween1:FlxTween = null;
@@ -32,19 +32,19 @@ class ExpurgationGremlin extends Module
 	function appear(hpPercent:Int, duration:Int, persistbool:Bool):Void
 	{
 		persist = persistbool;
-		
+
 		if (PlayState.instance.health < 1.5 && !persist)
 			return;
-		
+
 		for (damage in totalDamageTaken) {
 			damage = null;
 			destroy(damage);
 		}
-		
+
 		var damageTaken:Float = 0.0;
-		
+
 		totalDamageTaken.push(damageTaken);
-		
+
 		mustStop = false;
 
 		tween1 = null;
@@ -136,7 +136,7 @@ class ExpurgationGremlin extends Module
 			});
 		});
 	}
-	
+
 	function disappear():Void
 	{
 		if (currentGremlin != null)
@@ -151,7 +151,7 @@ class ExpurgationGremlin extends Module
 			totalDamageTaken = 0;
 		}
 	}
-	
+
 	function addToTotalDamage(amount:Float)
 	{
 		// yaay! im so happy! i have to do array bs again! fuck hscprit
