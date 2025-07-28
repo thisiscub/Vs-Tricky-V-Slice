@@ -16,13 +16,14 @@ class DeathNote extends NoteKind
 	{
 		super.onNoteIncoming(event);
 
-		Highscore.tallies.totalNotes--;
 		event.note.lowPriority = true;
 		event.note.offset.y = 90;
 	}
 
 	function onNoteMiss(event:NoteScriptEvent)
 	{
+		Highscore.tallies.totalNotes--;
+
 		event.cancel();
 	}
 

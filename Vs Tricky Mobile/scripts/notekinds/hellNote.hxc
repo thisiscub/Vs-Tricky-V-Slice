@@ -20,8 +20,6 @@ class HellNote extends NoteKind
 	{
 		super.onNoteIncoming(event);
 
-		Highscore.tallies.totalNotes--;
-
 		event.note.lowPriority = true;
 		event.note.flipY = PlayState.instance.playerStrumline.isDownscroll;
 		event.note.offset.x = 45;
@@ -36,6 +34,8 @@ class HellNote extends NoteKind
 			return;
 		}
 
+		Highscore.tallies.totalNotes--;
+
 		event.cancelEvent();
 
 		FunkinSound.playOnce(Paths.sound("burnSound"));
@@ -47,6 +47,8 @@ class HellNote extends NoteKind
 
 	function onNoteMiss(event:NoteScriptEvent)
 	{
+		Highscore.tallies.totalNotes--;
+		
 		event.cancelEvent();
 	}
 
